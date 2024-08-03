@@ -1035,9 +1035,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x06 and x[4] ==0x9B) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-               id(dhw_mischer_postion).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(dhw_mischer_postion).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Fehlercode
@@ -1045,9 +1045,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x13 and x[4] ==0x88) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-               id(Fehlercode).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(Fehlercode).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Heizkurve
@@ -1055,9 +1055,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4] ==0x0E) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))/100));
-               id(heizkurve).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))/100));
+                id(heizkurve).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Status Kesselpumpe
@@ -1065,9 +1065,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x0A and x[4] ==0x8C) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-               id(status_kessel).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(status_kessel).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       # Status Kompressor
@@ -1075,9 +1075,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0x61) {
-               float temperature =float((float((int((x[3])+( (x[4])<<8))))));
-               id(status_kompressor).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[3])+( (x[4])<<8))))));
+                id(status_kompressor).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Wasserdruck
@@ -1085,9 +1085,9 @@ canbus:
         then:
           - lambda: |-
               if(x[0]==0xd2 and x[2]==0x1C) {
-               float temperature =float((float((int((x[4])+( (x[3])<<8))))/1000));
-               id(Wasserdruck).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[4])+( (x[3])<<8))))/1000));
+                id(Wasserdruck).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Qchhp
@@ -1095,9 +1095,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x09 and x[4] ==0x20) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-               id(Qchhp).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(Qchhp).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Erzeugte Energie gesamt
@@ -1105,9 +1105,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x09 and x[4] ==0x30) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-               id(Erzeugte_Energie_Gesamt).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(Erzeugte_Energie_Gesamt).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Umwälzpumpe
@@ -1115,9 +1115,9 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0xC0 and x[4] ==0xF7) {
-               float temperature =float((float((int((x[6])+( (x[5])))))));
-               id(Umwaelzpumpe).publish_state(temperature);
-               ESP_LOGD("main", "Temperature received over can is %f", temperature);
+                float temperature =float((float((int((x[6])+( (x[5])))))));
+                id(Umwaelzpumpe).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
 
       #Betriebsart
@@ -1126,36 +1126,36 @@ canbus:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0xC0 and x[4] == 0xF6) {
                 float temperature =float((float((int((x[6])+( (x[5])))))));
-                 id(Betriebsart).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                id(Betriebsart).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Betriebsmodus
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4] ==0x12) {
-               float temperature =float((float((int((x[6])+( (x[5])))))));
+                float temperature =float((float((int((x[6])+( (x[5])))))));
                 id(Betriebsmodus).publish_state(temperature);
                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+              }
 
       #VL Soll
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[0]==0xd2 and x[2]==0x02) {
-                 float temperature =float((float((int((x[4])+( (x[3])<<8))))/10));
-                 id(vl_soll).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[4])+( (x[3])<<8))))/10));
+                id(vl_soll).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #BPV
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0xC0 and x[4]==0xFB) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
                 id(BPV).publish_state(temperature);
                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
@@ -1165,7 +1165,7 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4] ==0xDA) {
-               float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
                 id(durchfluss).publish_state(temperature);
                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
               }
@@ -1244,101 +1244,101 @@ canbus:
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4]==0x41) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-                 id(hk_funktion).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(hk_funktion).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Spreizung MOD HZ
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x06 and x[4]==0x83) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
-                 id(spreizung_mod_hz).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
+                id(spreizung_mod_hz).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Spreizung MOD WW
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x06 and x[4]==0x84) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
-                 id(spreizung_mod_ww).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
+                id(spreizung_mod_ww).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Spreizung MOD WW
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4]==0x29) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
-                 id(t_vorlauf_tag).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))/10));
+                id(t_vorlauf_tag).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #SG Modus
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x06 and x[4]==0x94) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-                 id(SGModus).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(SGModus).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Smart Grid
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x06 and x[4]==0x93) {
-                 float temperature =float((float((int((x[6])+( (x[5])<<8))))));
-                 id(Smartgrid).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[6])+( (x[5])<<8))))));
+                id(Smartgrid).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Raumsoll
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[0]==0xd2 and x[1]==0x00 and x[2]==0x05 and x[3]==0x00 and x[5]==0x00) {
-                 float temperature =float((float((int((x[4])+((x[3])<<8))))/10));
-                 id(raumsoll1).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[4])+((x[3])<<8))))/10));
+                id(raumsoll1).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Warmwasser
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[0] == 0xd2 && x[1] == 0x00 && x[2] == 0x13 && x[5] == 0x00 && x[6] == 0x00) {
-                  uint16_t temperature_raw = (x[3] << 8) | x[4]; // Convert to int16be
-                  float temperature = static_cast<float>(temperature_raw) / 10.0;
-                  id(t_ww_soll).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                uint16_t temperature_raw = (x[3] << 8) | x[4]; // Convert to int16be
+                float temperature = static_cast<float>(temperature_raw) / 10.0;
+                id(t_ww_soll).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Min Vl Soll
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0xFA and x[3]==0x01 and x[4]==0x2B) {
-                  float temperature =float(float((int((x[6])+( (x[5])<<8))))/10);
-                  id(min_vl_soll).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float(float((int((x[6])+( (x[5])<<8))))/10);
+                id(min_vl_soll).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Max Vl Soll
       - can_id: 0x180
         then:
           - lambda: |-
               if(x[2]==0x28) {
-                 float temperature =float((float((int((x[4])+( (x[3])<<8))))/10));
-                 id(max_vl_soll).publish_state(temperature);
-                 ESP_LOGD("main", "Temperature received over can is %f", temperature);
-               }
+                float temperature =float((float((int((x[4])+( (x[3])<<8))))/10));
+                id(max_vl_soll).publish_state(temperature);
+                ESP_LOGD("main", "Temperature received over can is %f", temperature);
+              }
 
       #Betriebsmodus (Automatik bei jeglicher Änderung)0x31, 0x00, 0xFA, 0x01, 0x12, 0x00, 0x00
       - can_id: 0x180
