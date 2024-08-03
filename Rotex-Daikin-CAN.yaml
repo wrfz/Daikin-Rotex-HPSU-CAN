@@ -250,7 +250,7 @@ text_sensor:
         return {"Aus"};
       } else if (id(status_kessel).state == 1){
         return {"An"};
-       } else {
+      } else {
         return {"Unknown"};
       }
 
@@ -262,7 +262,7 @@ text_sensor:
         return {"Aus"};
       } else if (id(status_kessel).state == 1){
         return {"An"};
-       } else {
+      } else {
         return {"Unknown"};
       }
 
@@ -274,7 +274,7 @@ text_sensor:
         return {"Witterungsgeführt"};
       } else if (id(hk_funktion).state == 1){
         return {"Fest"};
-       } else {
+      } else {
         return {"Unknown"};
       }
 
