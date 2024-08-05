@@ -1,14 +1,17 @@
 #include <sstream>
 #include <iomanip>
+#include <limits>
+
+const uint32_t MAX_UINT32 = std::numeric_limits<uint32_t>::max();
 
 std::string str_printf (const char* format, ...)
 {
     std::va_list args;
     std::string retval;
-    va_start (args, format);
-    retval.resize (vsnprintf (0, 0, format, args));
-    vsnprintf (&retval[0], retval.size () + 1, format, args);
-    va_end (args);
+    va_start(args, format);
+    retval.resize (vsnprintf(0, 0, format, args));
+    vsnprintf(&retval[0], retval.size () + 1, format, args);
+    va_end(args);
 
     return retval;
 }

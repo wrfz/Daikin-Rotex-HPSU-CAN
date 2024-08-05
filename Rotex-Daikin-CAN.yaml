@@ -65,13 +65,13 @@ text_sensor:
       } else if (id(Betriebsmodus).state == 4){
         return {"Absenken"};
       } else if (id(Betriebsmodus).state == 5){
-        return {"Sommer"}; 
+        return {"Sommer"};
       } else if (id(Betriebsmodus).state == 11){
         return {"Automatik 1"};
       } else if (id(Betriebsmodus).state == 12){
-        return {"Automatik 2"};    
+        return {"Automatik 2"};
       } else if (id(Betriebsmodus).state == 17){
-        return {"Kühlen"};       
+        return {"Kühlen"};
       } else {
         return {"Unknown"};
       }
@@ -115,7 +115,7 @@ text_sensor:
       } else if (id(Betriebsart).state == 3){
         return {"Abtauen"};
       } else if (id(Betriebsart).state == 4){
-        return {"Warmwasserbereitung"}; 
+        return {"Warmwasserbereitung"};
       } else {
         return {"Unknown"};
       }
@@ -124,123 +124,67 @@ text_sensor:
     name: "Fehlercode"
     id: text_fehler
     lambda: |-
-      if(id(Fehlercode).state == 0){
-        return {"kein Fehler"};
-      } else if (id(Fehlercode).state == 9001){
-        return {" Fehler E9001 Fehler Rücklauffühler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9002){
-        return {"Fehler E9002 Fehler Vorlauffühler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9003){
-        return {"Fehler E9003 Fehler Frostschutzfunktion Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9004){
-        return {"Fehler E9004Fehler Durchfluss Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9005){
-        return {"9005 Vorlauftemperaturfühler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9006){
-        return {"9006 Vorlauftemperaturfühler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9007){
-        return {"9007 Platine IG defekt Handbuch S.60"}; 
-      } else if (id(Fehlercode).state == 9008){
-        return {"9008 Kältemitteltemperatur außerhalb des Bereiches Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9009){
-        return {"9009 STB Fehler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9010){
-        return {"9010 STB Fehler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9011){
-        return {"9011 Fehler Flowsensor Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9012){
-        return {"9012 Fehler Vorlauffühler Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9013){
-        return {"9013 Platine AG defekt Handbuch S.60"};
-      } else if (id(Fehlercode).state == 9014){
-        return {"9014 P-Kältemittel hoch Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9015){
-        return {"9015 P-Kältemittel niedrig Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9016){
-        return {"9016 Lastschutz Verdichter Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9017){
-        return {"9017 Ventilator blockiert Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9018){
-        return {"9018 Expansionsventil Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9019){
-        return {"9019 Warmwassertemperatur > 85°C Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9020){
-        return {"9020 T-Verdampfer hoch Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9021){
-        return {"9021 HPS-System Handbuch S.61"};
-      } else if (id(Fehlercode).state == 9022){
-        return {"9022 Fehler AT-Fühler Handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9023){
-        return {"9023 Fehler WW-Fühler Handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9024){
-        return {"9024 Drucksensor Handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9025){
-        return {"9025 Fehler Rücklauffühler Handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9026){
-        return {"9026 Drucksensor Handbuch S.62"};
-      } else if (id(Fehlercode).state == 9027){
-        return {"9027 Aircoil-Fühler Defrost Handbuch S.62"};  
-      } else if (id(Fehlercode).state == 9028){
-        return {"9028 Aircoil-Fühler temp Handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9029){
-        return {"9029 Fehler Kältefühler AG handbuch S.62"};     
-      } else if (id(Fehlercode).state == 9030){
-        return {"9030 Defekt elektrisch Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9031){
-        return {"9031 Defekt elektrisch Handbuch S.63"};
-      } else if (id(Fehlercode).state == 9032){
-        return {"9032 Defekt elektrisch Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9033){
-        return {"9033 Defekt elektrisch Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9034){
-        return {"9034 Defekt elektrisch Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9035){
-        return {"9035 Platine AG defekt Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9036){
-        return {"9036 Defekt elektrisch Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9037){
-        return {"9037 Einstellung Leistung Handbuch S.63"};     
-      } else if (id(Fehlercode).state == 9038){
-        return {"9038 Kältemittel Leck Handbuch S.64"}; 
-      } else if (id(Fehlercode).state == 9039){
-        return {"9039 Unter/Überspannung Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 9041){
-        return {"9041 Übertragungsfehler Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 9042){
-        return {"9042 Übertragungsfehler Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 9043){
-        return {"9043 Übertragungsfehler Handbuch S.64"}; 
-      } else if (id(Fehlercode).state == 9044){
-        return {"9044 Übertragungsfehler Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 75){
-        return {"75 Fehler Außentemperaturfühler Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 76){
-        return {"76 Fehler Speichertemperaturfühler Handbuch S.64"};
-      } else if (id(Fehlercode).state == 81){
-        return {"81 Kommunikationsfehler Rocon Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 88){
-        return {"88 Kommunikationsfehler Rocon Handbuch S.6"};     
-      } else if (id(Fehlercode).state == 91){
-        return {"91 Kommunikationsfehler Rocon Handbuch S.6"};     
-      } else if (id(Fehlercode).state == 128){
-        return {"128 Fehler Rücklauftemperaturfühler Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 129){
-        return {"129 Fehler Drucksensor Handbuch S.64"};     
-      } else if (id(Fehlercode).state == 198){
-        return {"198 Durchflussmessung nicht plausibel Handbuch S.65"};     
-      } else if (id(Fehlercode).state == 200){
-        return {"200 Kommunikationsfehler Handbuch S.65"};     
-      } else if (id(Fehlercode).state == 8005){
-        return {"8005 Wasserdruck in Heizungsanlage zu gering Handbuch S.65"}; 
-      } else if (id(Fehlercode).state == 8100){
-        return {"8100 Kommunikation Handbuch S.65"};     
-      } else if (id(Fehlercode).state == 9000){
-        return {"9000 Interne vorübergehende Meldung Handbuch S65"};     
-      } else if (id(Fehlercode).state == 8006){
-        return {"8006 Warnung Druckverlust Handbuch S.65"};     
-      } else if (id(Fehlercode).state == 8007){
-        return {"8007 wasserdruck in Anlage zu hoch Handbuch S.65"};                                                                                                                                               
-      } else {
+      switch ((uint32_t)id(Fehlercode).state)
+      {
+      case 0: return {"kein Fehler"};
+      case 9001: return {"E9001 Rücklauffühler Handbuch S.60"};
+      case 9002: return {"E9002 Vorlauffühler Handbuch S.60"};
+      case 9003: return {"E9003 Frostschutzfunktion Handbuch S.60"};
+      case 9004: return {"E9004 Durchfluss Handbuch S.61"};
+      case 9005: return {"E9005 Vorlauftemperaturfühler Handbuch S.60"};
+      case 9006: return {"E9006 Vorlauftemperaturfühler Handbuch S.60"};
+      case 9007: return {"E9007 Platine IG defekt Handbuch S.60"};
+      case 9008: return {"E9008 Kältemitteltemperatur außerhalb des Bereiches Handbuch S.60"};
+      case 9009: return {"E9009 STB Fehler Handbuch S.60"};
+      case 9010: return {"E9010 STB Fehler Handbuch S.60"};
+      case 9011: return {"E9011 Fehler Flowsensor Handbuch S.60"};
+      case 9012: return {"E9012 Fehler Vorlauffühler Handbuch S.60"};
+      case 9013: return {"E9013 Platine AG defekt Handbuch S.60"};
+      case 9014: return {"E9014 P-Kältemittel hoch Handbuch S.61"};
+      case 9015: return {"E9015 P-Kältemittel niedrig Handbuch S.61"};
+      case 9016: return {"E9016 Lastschutz Verdichter Handbuch S.61"};
+      case 9017: return {"E9017 Ventilator blockiert Handbuch S.61"};
+      case 9018: return {"E9018 Expansionsventil Handbuch S.61"};
+      case 9019: return {"E9019 Warmwassertemperatur > 85°C Handbuch S.61"};
+      case 9020: return {"E9020 T-Verdampfer hoch Handbuch S.61"};
+      case 9021: return {"E9021 HPS-System Handbuch S.61"};
+      case 9022: return {"E9022 Fehler AT-Fühler Handbuch S.62"};
+      case 9023: return {"E9023 Fehler WW-Fühler Handbuch S.62"};
+      case 9024: return {"E9024 Drucksensor Handbuch S.62"};
+      case 9025: return {"E9025 Fehler Rücklauffühler Handbuch S.62"};
+      case 9026: return {"E9026 Drucksensor Handbuch S.62"};
+      case 9027: return {"E9027 Aircoil-Fühler Defrost Handbuch S.62"};
+      case 9028: return {"E9028 Aircoil-Fühler temp Handbuch S.62"};
+      case 9029: return {"E9029 Fehler Kältefühler AG handbuch S.62"};
+      case 9030: return {"E9030 Defekt elektrisch Handbuch S.63"};
+      case 9031: return {"E9031 Defekt elektrisch Handbuch S.63"};
+      case 9032: return {"E9032 Defekt elektrisch Handbuch S.63"};
+      case 9033: return {"E9033 Defekt elektrisch Handbuch S.63"};
+      case 9034: return {"E9034 Defekt elektrisch Handbuch S.63"};
+      case 9035: return {"E9035 Platine AG defekt Handbuch S.63"};
+      case 9036: return {"E9036 Defekt elektrisch Handbuch S.63"};
+      case 9037: return {"E9037 Einstellung Leistung Handbuch S.63"};
+      case 9038: return {"E9038 Kältemittel Leck Handbuch S.64"};
+      case 9039: return {"E9039 Unter/Überspannung Handbuch S.64"};
+      case 9041: return {"E9041 Übertragungsfehler Handbuch S.64"};
+      case 9042: return {"E9042 Übertragungsfehler Handbuch S.64"};
+      case 9043: return {"E9043 Übertragungsfehler Handbuch S.64"};
+      case 9044: return {"E9044 Übertragungsfehler Handbuch S.64"};
+      case 75: return {"E75 Fehler Außentemperaturfühler Handbuch S.64"};
+      case 76: return {"E76 Fehler Speichertemperaturfühler Handbuch S.64"};
+      case 81: return {"E81 Kommunikationsfehler Rocon Handbuch S.64"};
+      case 88: return {"E88 Kommunikationsfehler Rocon Handbuch S.6"};
+      case 91: return {"E91 Kommunikationsfehler Rocon Handbuch S.6"};
+      case 128: return {"E128 Fehler Rücklauftemperaturfühler Handbuch S.64"};
+      case 129: return {"E129 Fehler Drucksensor Handbuch S.64"};
+      case 198: return {"E198 Durchflussmessung nicht plausibel Handbuch S.65"};
+      case 200: return {"E200 Kommunikationsfehler Handbuch S.65"};
+      case 8005: return {"E8005 Wasserdruck in Heizungsanlage zu gering Handbuch S.65"};
+      case 8100: return {"E8100 Kommunikation Handbuch S.65"};
+      case 9000: return {"E9000 Interne vorübergehende Meldung Handbuch S65"};
+      case 8006: return {"W8006 Warnung Druckverlust Handbuch S.65"};
+      case 8007: return {"E8007 wasserdruck in Anlage zu hoch Handbuch S.65"};
+      default:
         return {"Unknown"};
       }
 
@@ -248,36 +192,33 @@ text_sensor:
     name: "Status Kesselpumpe"
     id: text_status2
     lambda: |-
-      if(id(status_kessel).state == 0){
-        return {"Aus"};
-      } else if (id(status_kessel).state == 1){
-        return {"An"};
-      } else {
-        return {"Unknown"};
+      switch ((uint32_t)id(status_kessel).state)
+      {
+      case 0: return {"Aus"};
+      case 1: return {"An"};
+      default: return {"Unknown"};
       }
 
   - platform: template
     name: "Status Kompressor"
     id: text_status3
     lambda: |-
-      if(id(status_kompressor).state == 0){
-        return {"Aus"};
-      } else if (id(status_kessel).state == 1){
-        return {"An"};
-      } else {
-        return {"Unknown"};
+      switch ((uint32_t)id(status_kompressor).state)
+      {
+      case 0: return {"Aus"};
+      case 1: return {"An"};
+      default: return {"Unknown"};
       }
 
   - platform: template
     name: "HK-Funktion"
     id: text_hk_funktion
     lambda: |-
-      if(id(hk_funktion).state == 0){
-        return {"Witterungsgeführt"};
-      } else if (id(hk_funktion).state == 1){
-        return {"Fest"};
-      } else {
-        return {"Unknown"};
+      switch ((uint32_t)id(hk_funktion).state)
+      {
+      case 0: return {"Witterungsgeführt"};
+      case 1: return {"Fest"};
+      default: return {"Unknown"};
       }
 
   - platform: wifi_info
