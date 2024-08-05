@@ -665,6 +665,13 @@ sensor:
     accuracy_decimals: 0
 
   - platform: template
+    name: "Status Heizstäbe"
+    id: status_heizstab
+    internal: false
+    icon: "mdi:waves-arrow-left"
+    accuracy_decimals: 0
+
+  - platform: template
     name: "Wasserdruck"
     id: Wasserdruck
     unit_of_measurement: "bar"
@@ -892,27 +899,6 @@ canbus:
         can_id_mask: 0
         then:
           - lambda: "onFrame(id(can_bus), can_id, x);"
-
-          #- can_id: 0x180
-          #  then:
-          #    - delay: 500ms
-          #    - lambda: "onFrame(id(can_bus), can_id, x);"
-          #- can_id: 0x300
-          #  then:
-          #    - delay: 500ms
-          #    - lambda: "onFrame(id(can_bus), can_id, x);"
-          #- can_id: 0x301
-          #  then:
-          #    - delay: 500ms
-          #    - lambda: "onFrame(id(can_bus), can_id, x);"
-          #- can_id: 0x500
-          #  then:
-          #    - delay: 500ms
-          #    - lambda: "onFrame(id(can_bus), can_id, x);"
-          #- can_id: 0x680
-          #  then:
-          #    - delay: 500ms
-          #    - lambda: "onFrame(id(can_bus), can_id, x);"
 
 time:
   - platform: sntp
