@@ -7,7 +7,10 @@ substitutions:
 esphome:
   name: rotex
   friendly_name: Rotex
-  includes: requests.h
+  includes:
+    - include/utils.h
+    - include/request.h
+    - include/handler.h
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -183,7 +186,7 @@ text_sensor:
       case 8100: return {"E8100 Kommunikation Handbuch S.65"};
       case 9000: return {"E9000 Interne vorübergehende Meldung Handbuch S65"};
       case 8006: return {"W8006 Warnung Druckverlust Handbuch S.65"};
-      case 8007: return {"E8007 wasserdruck in Anlage zu hoch Handbuch S.65"};
+      case 8007: return {"W8007 wasserdruck in Anlage zu hoch Handbuch S.65"};
       default:
         return {"Unknown"};
       }
