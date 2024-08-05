@@ -59,23 +59,17 @@ text_sensor:
     name: "Betriebsmodus"
     id: text_betriebsmodus
     lambda: |-
-      if(id(Betriebsmodus).state == 0){
-        return {"Notbetrieb"};
-      } else if (id(Betriebsmodus).state == 1){
-        return {"Bereitschaft"};
-      } else if (id(Betriebsmodus).state == 3){
-        return {"Heizen"};
-      } else if (id(Betriebsmodus).state == 4){
-        return {"Absenken"};
-      } else if (id(Betriebsmodus).state == 5){
-        return {"Sommer"};
-      } else if (id(Betriebsmodus).state == 11){
-        return {"Automatik 1"};
-      } else if (id(Betriebsmodus).state == 12){
-        return {"Automatik 2"};
-      } else if (id(Betriebsmodus).state == 17){
-        return {"Kühlen"};
-      } else {
+      switch ((uint32_t)id(Betriebsmodus).state)
+      {
+      case 0:  return {"Notbetrieb"};
+      case 1:  return {"Bereitschaft"};
+      case 3:  return {"Heizen"};
+      case 4:  return {"Absenken"};
+      case 5:  return {"Sommer"};
+      case 11: return {"Automatik 1"};
+      case 12: return {"Automatik 2"};
+      case 17: return {"Kühlen"};
+      default:
         return {"Unknown"};
       }
 
@@ -83,13 +77,12 @@ text_sensor:
     name: "SG-Modus"
     id: text_sg_modus
     lambda: |-
-      if(id(SGModus).state == 0){
-        return {"Aus"};
-      } else if (id(SGModus).state == 1){
-        return {"SG Modus 1"};
-      } else if (id(SGModus).state == 2){
-        return {"SG Modus 2"};
-      } else {
+      switch ((uint32_t)id(SGModus).state)
+      {
+      case 0: return {"Aus"};
+      case 1: return {"SG Modus 1"};
+      case 2: return {"SG Modus 2"};
+      default:
         return {"Unknown"};
       }
 
@@ -97,11 +90,11 @@ text_sensor:
     name: "Smart-Grid"
     id: text_smartgrid
     lambda: |-
-      if(id(Smartgrid).state == 0){
-        return {"Aus"};
-      } else if (id(Smartgrid).state == 1){
-        return {"An"};
-      } else {
+      switch ((uint32_t)id(Smartgrid).state)
+      {
+      case 0: return {"Aus"};
+      case 1: return {"An"};
+      default:
         return {"Unknown"};
       }
 
@@ -109,17 +102,14 @@ text_sensor:
     name: "Betriebsart"
     id: text_betriebsart
     lambda: |-
-      if(id(Betriebsart).state == 0){
-        return {"Standby"};
-      } else if (id(Betriebsart).state == 1){
-        return {"Heizen"};
-      } else if (id(Betriebsart).state == 2){
-        return {"Kühlen"};
-      } else if (id(Betriebsart).state == 3){
-        return {"Abtauen"};
-      } else if (id(Betriebsart).state == 4){
-        return {"Warmwasserbereitung"};
-      } else {
+      switch ((uint32_t)id(Betriebsart).state)
+      {
+      case 0: return {"Standby"};
+      case 1: return {"Heizen"};
+      case 2: return {"Kühlen"};
+      case 3: return {"Abtauen"};
+      case 4: return {"Warmwasserbereitung"};
+      default:
         return {"Unknown"};
       }
 
