@@ -327,6 +327,13 @@ switch:
           id: interval_active
           value: "false"
 
+text:
+  - platform: template
+    id: log_filter_text
+    name: "Log Filter"
+    mode: text
+    optimistic: true
+
 #switch:
 # - platform: gpio
 #  name: Heizen Thermostat
