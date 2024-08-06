@@ -5,67 +5,14 @@ void onFrame(esphome::esp32_can::ESP32Can* can_bus, uint32_t can_id, const std::
     switch (can_id)
     {
     case 0x180:
-
-        // Mischer DHW Position
-        if (data[2] == 0xFA and data[3] == 0x06 and data[4] == 0x9B) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(dhw_mischer_postion).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Fehlercode
-        if (data[2] == 0xFA and data[3] == 0x13 and data[4] == 0x88) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(Fehlercode).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Heizkurve
-        if (data[2] == 0xFA and data[3] == 0x01 and data[4] == 0x0E) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/100));
-            id(heizkurve).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Status Kesselpumpe
-        if (data[2] == 0xFA and data[3] == 0x0A and data[4] == 0x8C) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(status_kessel).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
+        if (data_requests.handle(data)) {
+            return;
         }
 
         // Wasserdruck
         if (data[0] == 0xd2 and data[2] == 0x1C) {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/1000));
             id(Wasserdruck).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Qchhp
-        if (data[2] == 0xFA and data[3] == 0x09 and data[4] == 0x20) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(Qchhp).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Erzeugte Energie gesamt
-        if (data[2] == 0xFA and data[3] == 0x09 and data[4] == 0x30) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(Erzeugte_Energie_Gesamt).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Umwälzpumpe
-        if (data[2] == 0xFA and data[3] == 0xC0 and data[4] == 0xF7) {
-            float temperature = float((float((int((data[6]) + ((data[5])))))));
-            id(Umwaelzpumpe).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Betriebsart
-        if (data[2] == 0xFA and data[3] == 0xC0 and data[4] == 0xF6) {
-            float temperature = float((float((int((data[6]) + ((data[5])))))));
-            id(Betriebsart).publish_state(temperature);
             ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
         }
 
@@ -80,62 +27,6 @@ void onFrame(esphome::esp32_can::ESP32Can* can_bus, uint32_t can_id, const std::
         if (data[0] == 0xd2 and data[2] == 0x02) {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(vl_soll).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // BPV
-        if (data[2] == 0xFA and data[3] == 0xC0 and data[4] == 0xFB) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(BPV).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Volumenstrom
-        if (data[2] == 0xFA and data[3] == 0x01 and data[4] == 0xDA) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(durchfluss).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // rt_pump
-        if (data[2] == 0xFA and data[3] == 0x06 and data[4] == 0xA4) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(rt_pump).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // rt_compressor
-        if (data[2] == 0xFA and data[3] == 0x06 and data[4] == 0xA5) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
-            id(rt_compressor).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Warmwasser-Temperaturabfrage
-        if (data[2] == 0xFA and data[3] == 0x00 and data[4] == 0x0E) {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
-            id(temperature_water).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Vorlauftemperaturabfrage (TVBH)
-        if (data[2] == 0xFA and data[3] == 0xC1 and data[4] == 0x02) {
-            float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
-            id(TVBH).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Vorlauftemperaturabfrage Heizkreis (TV)
-        if (data[2] == 0xFA and data[3] == 0xC0 and data[4] == 0xFC) {
-            float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
-            id(TV).publish_state(temperature);
-            ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
-        }
-
-        // Rücklauftemperaturabfrage
-        if (data[2] == 0xFA and data[3] == 0xC1 and data[4] == 0x00) {
-            float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
-            id(ruecklauf).publish_state(temperature);
             ESP_LOG_FILTER("main", "Temperature received over can is %f", temperature);
         }
 

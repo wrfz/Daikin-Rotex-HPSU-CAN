@@ -11,6 +11,11 @@ esphome:
     - include/utils.h
     - include/request.h
     - include/handler.h
+  platformio_options:
+    build_unflags:
+      - "-std=gnu++11"
+    build_flags:
+      - "-std=gnu++17"
 
 esp32:
   board: esp32-s3-devkitc-1
