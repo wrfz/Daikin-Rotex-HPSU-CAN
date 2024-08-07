@@ -16,11 +16,52 @@ std::string str_printf (const char* format, ...)
     return retval;
 }
 
+bool split(std::string const& str, std::function<bool(std::string const&)> lambda)
+{
+    std::string segment;
+    std::istringstream iss(str);
+
+    bool found = str.empty();
+    while (!found && std::getline(iss, segment, '|'))
+    {
+        found = lambda(segment);
+    }
+
+    return found;
+}
+
+std::vector<std::string> split2(std::string const& str)
+{
+    std::string segment;
+    std::istringstream iss(str);
+    std::vector<std::string> result;
+
+    while (std::getline(iss, segment, '|'))
+    {
+        result.push_back(segment);
+    }
+
+    return result;
+}
+
+//    auto lambda = [&tag_str, &formated](auto segment) {
+//        return tag_str.find(segment) != std::string::npos || formated.find(segment) != std::string::npos;
+//    };
+
 #define ESP_LOG_FILTER(tag, format, ...)                            \
     const std::string tag_str = std::string(tag);                   \
     const std::string formated = str_printf(format, __VA_ARGS__);   \
     const std::string log_filter = id(log_filter_text).state;       \
-    if (log_filter == "" || tag_str.find(log_filter) != std::string::npos || formated.find(log_filter) != std::string::npos) ESP_LOGI(tag, formated.c_str())
+    bool found = log_filter.empty();                                \
+    if (!found) {                                                   \
+        for (auto segment : split2(log_filter)) {                   \
+            if (tag_str.find(segment) != std::string::npos || formated.find(segment) != std::string::npos) { \
+                found = true;                                       \
+                break;                                              \
+            }                                                       \
+        }                                                           \
+    }                                                               \
+    if (found) ESP_LOGI(tag, formated.c_str())
 
 std::string to_hex(uint32_t value)
 {
@@ -29,7 +70,8 @@ std::string to_hex(uint32_t value)
     return std::string(hex_string);
 }
 
-std::string to_hex(const std::vector<uint8_t>& data)
+template<class T>
+std::string to_hex(const T& data)
 {
     std::stringstream str;
     str.setf(std::ios_base::hex, std::ios::basefield);

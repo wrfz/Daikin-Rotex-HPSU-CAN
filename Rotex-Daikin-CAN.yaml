@@ -10,7 +10,6 @@ esphome:
   includes:
     - include/utils.h
     - include/request.h
-    - include/handler.h
   platformio_options:
     build_unflags:
       - "-std=gnu++11"
@@ -844,7 +843,7 @@ canbus:
       - can_id: 0 # listen to all messages
         can_id_mask: 0
         then:
-          - lambda: "onFrame(id(can_bus), can_id, x);"
+          - lambda: "data_requests.handle(id(can_bus), can_id, x);"
 
 time:
   - platform: sntp
