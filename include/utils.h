@@ -63,6 +63,15 @@ std::vector<std::string> split2(std::string const& str)
     }                                                               \
     if (found) ESP_LOGI(tag, formated.c_str())
 
+bool is_number(const std::string& str)
+{
+    return !str.empty() && std::find_if(
+        str.begin(), 
+        str.end(),
+        [](unsigned char chr) { return !std::isdigit(chr); }
+    ) == str.end();
+}
+
 std::string to_hex(uint32_t value)
 {
     char hex_string[20];
