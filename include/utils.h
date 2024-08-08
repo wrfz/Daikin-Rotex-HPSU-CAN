@@ -1,3 +1,6 @@
+#pragma once
+#include "esphome.h"
+
 #include <sstream>
 #include <iomanip>
 #include <limits>

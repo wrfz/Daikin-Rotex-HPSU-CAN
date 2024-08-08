@@ -5,16 +5,17 @@ substitutions:
   interval_time: 20s
 
 esphome:
-  name: rotex
-  friendly_name: Rotex
-  includes:
-    - include/utils.h
-    - include/request.h
-  platformio_options:
-    build_unflags:
-      - "-std=gnu++11"
-    build_flags:
-      - "-std=gnu++17"
+    name: rotex
+    friendly_name: Rotex
+    includes:
+        - include/utils.h
+        - include/request.h
+        - include/${heatpump_model}.h
+    platformio_options:
+        build_unflags:
+            - "-std=gnu++11"
+        build_flags:
+            - "-std=gnu++17"
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -283,7 +284,7 @@ text:
     set_action:
       - lambda: |-
           if (is_number(x)) {
-            sendRequest(id(can_bus), std::stoi(x));
+            data_requests.sendRequest(id(can_bus), std::stoi(x));
           }
 
 #switch:
@@ -858,14 +859,20 @@ canbus:
         can_id_mask: 0
         then:
           - lambda: |-
-              data_requests.handle(id(can_bus), can_id, x);
+              ESP_LOGI("main", "Millis() %d", millis());
+              ESP_LOGI("main", "now() %d", id(homeassistant_time).now());
+
+              data_requests.handle(id(can_bus), can_id, x, millis());
               if (id(send_can_requests).state) {
-                sendRequest(id(can_bus));
+                data_requests.sendRequest(id(can_bus));
               }
 
-#time:
-#  - platform: sntp
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+  - platform: sntp
+    id: sntp_time
 #    on_time:
 #      - seconds: /1
 #        then:
-#          - lambda: "sendRequest(id(can_bus));"
+#          - lambda: "data_requests..sendRequest(id(can_bus));"
