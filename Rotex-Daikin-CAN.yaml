@@ -297,6 +297,19 @@ text:
 # pin: GPIO37
 ############################### Number (Slidermodus) ###############################################
 number:
+  - platform: template
+    name: "Update Interval"
+    id: update_interval
+    optimistic: true
+    mode: box
+    min_value: 0
+    max_value: 600000 # 10 minutes
+    step: 1.0
+    initial_value: 1000
+    set_action:
+      - lambda: |-
+          data_requests.setUpdateInterval(x);
+
   ##### Raumsoll 1
   - platform: template
     name: "Raumsoll 1 Einstellen"
@@ -863,16 +876,13 @@ canbus:
               ESP_LOGI("main", "now() %d", id(homeassistant_time).now());
 
               data_requests.handle(id(can_bus), can_id, x, millis());
-              if (id(send_can_requests).state) {
-                data_requests.sendRequest(id(can_bus));
-              }
 
 time:
   - platform: homeassistant
     id: homeassistant_time
   - platform: sntp
     id: sntp_time
-#    on_time:
-#      - seconds: /1
-#        then:
-#          - lambda: "data_requests..sendRequest(id(can_bus));"
+    on_time:
+      - seconds: /1
+        then:
+          - lambda: "data_requests.sendNextPendingRequest(id(can_bus));"
