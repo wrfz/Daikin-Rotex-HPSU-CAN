@@ -1,39 +1,21 @@
 #pragma once
-#include "esphome.h"
 
+#include <cstdarg>
 #include <sstream>
 #include <iomanip>
-#include <limits>
 
-const uint32_t MAX_UINT32 = std::numeric_limits<uint32_t>::max();
-
-std::string str_printf (const char* format, ...)
+template<typename... Args>
+std::string str_format(const std::string& format, Args... args)
 {
-    std::va_list args;
-    std::string retval;
-    va_start(args, format);
-    retval.resize (vsnprintf(0, 0, format, args));
-    vsnprintf(&retval[0], retval.size () + 1, format, args);
-    va_end(args);
+    const auto size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;
+    const auto buffer = std::make_unique<char[]>(size);
 
-    return retval;
+    std::snprintf(buffer.get(), size, format.c_str(), args...);
+
+    return std::string(buffer.get(), buffer.get() + size - 1);
 }
 
-bool split(std::string const& str, std::function<bool(std::string const&)> lambda)
-{
-    std::string segment;
-    std::istringstream iss(str);
-
-    bool found = str.empty();
-    while (!found && std::getline(iss, segment, '|'))
-    {
-        found = lambda(segment);
-    }
-
-    return found;
-}
-
-std::vector<std::string> split2(std::string const& str)
+std::vector<std::string> split(std::string const& str)
 {
     std::string segment;
     std::istringstream iss(str);
@@ -41,23 +23,21 @@ std::vector<std::string> split2(std::string const& str)
 
     while (std::getline(iss, segment, '|'))
     {
-        result.push_back(segment);
+        if (!segment.empty()) {
+            result.push_back(segment);
+        }
     }
 
     return result;
 }
 
-//    auto lambda = [&tag_str, &formated](auto segment) {
-//        return tag_str.find(segment) != std::string::npos || formated.find(segment) != std::string::npos;
-//    };
-
 #define ESP_LOG_FILTER(tag, format, ...)                            \
     const std::string tag_str = std::string(tag);                   \
-    const std::string formated = str_printf(format, __VA_ARGS__);   \
+    const std::string formated = str_format(format, __VA_ARGS__);   \
     const std::string log_filter = id(log_filter_text).state;       \
     bool found = log_filter.empty();                                \
     if (!found) {                                                   \
-        for (auto segment : split2(log_filter)) {                   \
+        for (auto segment : split(log_filter)) {                   \
             if (tag_str.find(segment) != std::string::npos || formated.find(segment) != std::string::npos) { \
                 found = true;                                       \
                 break;                                              \
@@ -78,11 +58,11 @@ bool is_number(const std::string& str)
 std::string to_hex(uint32_t value)
 {
     char hex_string[20];
-    sprintf(hex_string, "0x%X", value);
+    sprintf(hex_string, "0x%02X", value);
     return std::string(hex_string);
 }
 
-template<class T>
+template<typename T>
 std::string to_hex(const T& data)
 {
     std::stringstream str;
@@ -91,13 +71,14 @@ std::string to_hex(const T& data)
     str.fill('0');
 
     bool first = true;
-    for (uint8_t chr : data){
+    for (uint8_t chr : data)
+    {
         if (first) {
             first = false;
         } else {
             str << " ";
         }
-        str << "0x" << std::setw(2) << (unsigned short)(byte)chr;
+        str << "0x" << std::setw(2) << (unsigned short)(std::byte)chr;
     }
     return str.str();
 }
