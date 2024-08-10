@@ -137,7 +137,7 @@ private:
 
     TRequest* getNextRequestToSend() {
         const uint32_t timestamp = millis();
-        const uint32_t interval = static_cast<uint32_t>(id(update_interval).state);
+        const uint32_t interval = static_cast<uint32_t>(id(update_interval).state) * 1000;
 
         for (auto& request : m_requests) {
             if ((timestamp > (request.getLastUpdate() + interval)) && !request.inProgress()) {
