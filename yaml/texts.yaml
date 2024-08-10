@@ -1,0 +1,16 @@
+text:
+  - platform: template
+    id: log_filter_text
+    name: "Log Filter"
+    mode: text
+    optimistic: true
+
+  - platform: template
+    name: "CAN message request"
+    id: can_message_request
+    mode: text
+    set_action:
+      - lambda: |-
+          if (Utils::is_number(x)) {
+            data_requests.sendRequest(id(can_bus), std::stoi(x));
+          }

@@ -1,0 +1,100 @@
+select:
+    #Set Betriebsmodus
+
+  - platform: template
+    name: "Betriebsmodus setzen"
+    id: betrieb
+    optimistic: true
+    options:
+      - "Heizen"
+      - "Bereitschaft"
+      - "Absenken"
+      - "Sommer"
+      - "Kühlen"
+      - "Automatik 1"
+      - "Automatik 2"
+    initial_option: Heizen
+    set_action:
+      then:
+        - delay: 250ms
+        - canbus.send:
+            can_id: 0x680
+            data: !lambda |-
+              static const std::map<std::string, uint8_t> mode_map = {
+                {"Heizen", 3},
+                {"Bereitschaft", 1},
+                {"Absenken", 4},
+                {"Sommer", 5},
+                {"Kühlen", 17},
+                {"Automatik 1", 11},
+                {"Automatik 2", 12}
+              };
+              return {0x30, 0x00, 0xFA, 0x01, 0x12, mode_map.at(x), 0x00};
+
+    #Set HK Funktion
+
+  - platform: template
+    name: "HK Funktion"
+    id: hk
+    optimistic: true
+    options:
+      - "Witterungsgeführt"
+      - "Fest"
+    initial_option: Witterungsgeführt
+    set_action:
+      then:
+        - delay: 250ms
+        - canbus.send:
+            can_id: 0x680
+            data: !lambda |-
+              static const std::map<std::string, uint8_t> mode_map = {
+                {"Witterungsgeführt", 0},
+                {"Fest", 1}
+              };
+              return {0x30, 0x00, 0xFA, 0x01, 0x41, 0x00, mode_map.at(x)};
+
+    #Set SG Funktion
+
+  - platform: template
+    name: "SG Modus"
+    id: sg
+    optimistic: true
+    options:
+      - "Aus"
+      - "SG Modus 1"
+      - "SG Modus 2"
+    initial_option: Aus
+    set_action:
+      then:
+        - delay: 250ms
+        - canbus.send:
+            can_id: 0x680
+            data: !lambda |-
+              static const std::map<std::string, uint8_t> mode_map = {
+                {"Aus", 0},
+                {"SG Modus 1", 1},
+                {"SG Modus 2", 2}
+              };
+              return {0x30, 0x00, 0xFA, 0x06, 0x94, 0x00, mode_map.at(x)};
+
+    #Set Smart Grid
+
+  - platform: template
+    name: "Smart Grid"
+    id: smartgrid
+    optimistic: true
+    options:
+      - "Aus"
+      - "An"
+    initial_option: Aus
+    set_action:
+      then:
+        - delay: 250ms
+        - canbus.send:
+            can_id: 0x680
+            data: !lambda |-
+              static const std::map<std::string, uint8_t> mode_map = {
+                {"Aus", 0},
+                {"An", 1}
+              };
+              return {0x30, 0x00, 0xFA, 0x06, 0x93, 0x00, mode_map.at(x)};

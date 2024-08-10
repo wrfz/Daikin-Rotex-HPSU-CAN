@@ -1,0 +1,25 @@
+button:
+  - platform: template
+    name: Warmwasser bereiten
+    id: ww_button
+    icon: "mdi:water-boiler"
+    on_press:
+      then:
+        - globals.set:
+            id: backup_dhw
+            value: !lambda return int(id(t_ww_soll).state * 10);
+        - canbus.send:
+            can_id: 0x680
+            data: [0x30, 0x00, 0x13, 0x02, 0xBC, 0x00, 0x00] # 70 Grad Grundeinstellung
+        - delay: 10s
+        - canbus.send:
+            can_id: 0x680
+            data: !lambda |-
+              uint16_t temperature = (uint16_t)id(backup_dhw); // Convert to int16be
+              uint8_t high_byte = temperature >> 8;
+              uint8_t low_byte = temperature & 0xFF;
+              return {0x30, 0x00, 0x13, high_byte, low_byte, 0x00, 0x00};
+        - logger.log: CAN Nachricht wurde gesendet
+
+  - platform: restart
+    name: "Rotex ESP Restart"
