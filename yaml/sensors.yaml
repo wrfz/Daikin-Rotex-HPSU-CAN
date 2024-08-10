@@ -1,0 +1,298 @@
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s
+
+  - platform: template
+    name: "DHW Mischer Position"
+    id: dhw_mischer_postion
+    internal: false
+    unit_of_measurement: "%"
+    icon: "mdi:thermometer-lines"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Fehlercode"
+    id: Fehlercode
+    internal: true
+    unit_of_measurement: ""
+    icon: "mdi:thermometer-lines"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "SG Modus"
+    id: SGModus
+    internal: true
+    unit_of_measurement: ""
+    icon: "mdi:thermometer-lines"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Smart Grid"
+    id: Smartgrid
+    internal: true
+    unit_of_measurement: ""
+    icon: "mdi:thermometer-lines"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Heizkurve"
+    id: heizkurve
+    unit_of_measurement: ""
+    device_class: "temperature"
+    icon: "mdi:thermometer-lines"
+    state_class: "measurement"
+    accuracy_decimals: 2
+
+  - platform: template
+    name: "Thermische Leistung"
+    device_class: "power"
+    unit_of_measurement: "kW"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      if (id(text_betriebsart).state == "Warmwasserbereitung") {
+        return ((id(TV).state - id(ruecklauf).state) * (4.19 * id(durchfluss).state)) / 3600;
+      } else if (id(text_betriebsart).state == "Heizen") {
+        return ((id(TVBH).state - id(ruecklauf).state) * (4.19 * id(durchfluss).state)) / 3600;
+      } else {
+        return 0.0;
+      }
+
+  - platform: template
+    name: "Raumsoll 1"
+    id: raumsoll1
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Status Kessel"
+    id: status_kessel
+    internal: true
+    icon: "mdi:thermometer-lines"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Status Kompressor"
+    id: status_kompressor
+    internal: true
+    icon: "mdi:thermometer-lines"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Status Heizstäbe"
+    id: status_heizstab
+    internal: false
+    icon: "mdi:waves-arrow-left"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Wasserdruck"
+    id: Wasserdruck
+    unit_of_measurement: "bar"
+    icon: "mdi:thermometer-lines"
+    device_class: "pressure"
+    state_class: "measurement"
+    accuracy_decimals: 2
+
+  - platform: template
+    name: "Erzeugte Energie Gesamt"
+    id: Erzeugte_Energie_Gesamt
+    unit_of_measurement: "kWh"
+    icon: "mdi:thermometer-lines"
+    device_class: "ENERGY_STORAGE"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "EHS fuer CH"
+    id: Qchhp
+    unit_of_measurement: "kWh"
+    icon: "mdi:thermometer-lines"
+    device_class: "ENERGY_STORAGE"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Umwaelzpumpe"
+    id: Umwaelzpumpe
+    unit_of_measurement: "%"
+    icon: "mdi:thermometer-lines"
+    device_class: "battery"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Betriebsmodus"
+    internal: true
+    id: Betriebsmodus
+    unit_of_measurement: ""
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Betriebsart"
+    id: Betriebsart
+    internal: true
+    unit_of_measurement: ""
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "T-WW-Soll1"
+    id: t_ww_soll
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Vorlauf Soll"
+    id: vl_soll
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Aussentemperatur"
+    id: temperature_outside
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Warmwassertemperatur"
+    id: temperature_water
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer-lines"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Vorlauftemperatur Heizung (TVBH)"
+    id: TVBH
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-right"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Heizkreis Vorlauf (TV)"
+    id: TV
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-right"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Ruecklauftemperatur Heizung"
+    id: ruecklauf
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-left"
+    device_class: "temperature"
+    state_class: "measurement"
+    accuracy_decimals: 1
+
+  - platform: template
+    name: "Durchfluss"
+    id: durchfluss
+    unit_of_measurement: "ltr/h"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Laufzeit Compressor"
+    id: rt_compressor
+    unit_of_measurement: "h"
+    icon: "mdi:icon-time"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Laufzeit Pump"
+    id: rt_pump
+    unit_of_measurement: "h"
+    icon: "mdi:icon-time"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "BPV"
+    id: BPV
+    unit_of_measurement: "%"
+    icon: "mdi:waves-arrow-left"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Min VL Soll"
+    internal: false
+    id: min_vl_soll
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Max VL Soll"
+    internal: false
+    id: max_vl_soll
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "HK-Funktion"
+    internal: true
+    id: hk_funktion
+    unit_of_measurement: ""
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Spreizung MOD HZ"
+    internal: false
+    id: spreizung_mod_hz
+    unit_of_measurement: "K"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "Spreizung MOD WW"
+    internal: false
+    id: spreizung_mod_ww
+    unit_of_measurement: "K"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
+
+  - platform: template
+    name: "T Vorlauf Tag"
+    internal: false
+    id: t_vorlauf_tag
+    unit_of_measurement: "°C"
+    icon: "mdi:waves-arrow-left"
+    state_class: "measurement"
+    accuracy_decimals: 0
