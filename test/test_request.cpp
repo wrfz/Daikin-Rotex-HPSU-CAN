@@ -21,7 +21,7 @@ TEST(TestRequest, send) {
         "Status Kessel",
         {0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00},
         {  DC,   DC, 0xFA, 0x0A, 0x8C,   DC,   DC},
-        [](auto const& data) {}
+        [](auto const& data) -> std::string { return ""; }
     };
 
     MockESP32Can can;
@@ -42,7 +42,7 @@ TEST(TestRequest, isMatch) {
             "Status Kessel",
             {0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00},
             {  DC,   DC, 0xFA, 0x0A, 0x8C,   DC,   DC},
-            [](auto const& data) {}
+            [](auto const& data) -> std::string { return ""; }
         };
 
         EXPECT_TRUE(request.isMatch(0x180, TV8({0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00})));
@@ -60,7 +60,7 @@ TEST(TestRequest, isMatch) {
             {0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00},
             0x300,
             {  DC,   DC, 0xFA, 0x0A, 0x8C,   DC,   DC},
-            [](auto const& data) {}
+            [](auto const& data) -> std::string { return ""; }
         };
 
         EXPECT_FALSE(request.isMatch(0x180, TV8({0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00})));
@@ -78,11 +78,12 @@ TEST(TestRequest, handle) {
             "Status Kessel",
             {0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00},
             {  DC,   DC, 0xFA, 0x0A, 0x8C,   DC,   DC},
-            [&v0, &v1, &v5, &v6](auto const& data) {
+            [&v0, &v1, &v5, &v6](auto const& data) -> std::string {
                 v0 = data[0];
                 v1 = data[1];
                 v5 = data[5];
                 v6 = data[6];
+                return "";
             }
         };
 
@@ -114,7 +115,7 @@ TEST(TestRequest, inProgress) {
         {0x31, 0x00, 0xFA, 0x0A, 0x8C, 0x00, 0x00},
         0x200,
         {  DC,   DC, 0xFA, 0x0A, 0x8C,   DC,   DC},
-        [](auto const& data) {}
+        [](auto const& data) -> std::string {return ""; }
     };
 
     esphome::esp32_can::ESP32Can can;

@@ -36,7 +36,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float status = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(status_kessel).publish_state(status);
-            return Utils::str_format("Status Kessel: %f", status);
+            return Utils::format("Status Kessel: %f", status);
         }
     },
     {// 1
@@ -46,7 +46,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float status = float((float((int((data[6]) + ((data[5])))))));
             id(Umwaelzpumpe).publish_state(status);
-            return Utils::str_format("Umwälzpumpe: %f", status);
+            return Utils::format("Umwälzpumpe: %f", status);
         }
     },
     {// 2
@@ -56,7 +56,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             id(Betriebsmodus).publish_state(data[5]);
             const std::string mode = Utils::setSelectOption(id(select_betriebsmodus), map_betriebsmodus, data[5]);
-            return Utils::str_format("Betriebsmodus: %s", mode.c_str());
+            return Utils::format("Betriebsmodus: %s", mode.c_str());
         }
     },
     {// 3
@@ -66,7 +66,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5])))))));
             id(Betriebsart).publish_state(temperature);
-            return Utils::str_format("Betriebsart: %f", temperature);
+            return Utils::format("Betriebsart: %f", temperature);
         }
     },
     {// 4
@@ -76,7 +76,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(vl_soll).publish_state(temperature);
-            return Utils::str_format("VL Soll: %f", temperature);
+            return Utils::format("VL Soll: %f", temperature);
         }
     },
     {// 5
@@ -86,7 +86,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(BPV).publish_state(temperature);
-            return Utils::str_format("BPV: %f", temperature);
+            return Utils::format("BPV: %f", temperature);
         }
     },
     {// 6
@@ -96,7 +96,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(durchfluss).publish_state(temperature);
-            return Utils::str_format("Volumenstrom: %f", temperature);
+            return Utils::format("Volumenstrom: %f", temperature);
         }
     },
     {// 7
@@ -106,7 +106,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(rt_pump).publish_state(temperature);
-            return Utils::str_format("Laufzeit Pump: %f", temperature);
+            return Utils::format("Laufzeit Pump: %f", temperature);
         }
     },
     {// 8
@@ -116,7 +116,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
             id(TVBH).publish_state(temperature);
-            return Utils::str_format("Vorlauftemperatur: %f", temperature);
+            return Utils::format("Vorlauftemperatur: %f", temperature);
         }
     },
     {// 9
@@ -126,7 +126,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
             id(TV).publish_state(temperature);
-            return Utils::str_format("Vorlauftemperatur: %f", temperature);
+            return Utils::format("Vorlauftemperatur: %f", temperature);
         }
     },
     {// 10
@@ -136,7 +136,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
             id(ruecklauf).publish_state(temperature);
-            return Utils::str_format("Rücklauftemperatur: %f", temperature);
+            return Utils::format("Rücklauftemperatur: %f", temperature);
         }
     },
     {// 11
@@ -146,7 +146,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
             id(temperature_water).publish_state(temperature);
-            return Utils::str_format("Warmwassertemperatur: %f", temperature);
+            return Utils::format("Warmwassertemperatur: %f", temperature);
         }
     },
     {// 12
@@ -157,7 +157,7 @@ const std::vector<TRequest> entity_config = {
             uint16_t temperature_raw = (data[3] <<  8) | data[4]; // Convert to int16be
             float temperature = static_cast<float>(temperature_raw) / 10.0;
             id(t_ww_soll).publish_state(temperature);
-            return Utils::str_format("Warmwasser soll: %f", temperature);
+            return Utils::format("Warmwasser soll: %f", temperature);
         }
     },
     {// 13
@@ -167,7 +167,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(raumsoll1).publish_state(temperature);
-            return Utils::str_format("Raumsoll 1: %f", temperature);
+            return Utils::format("Raumsoll 1: %f", temperature);
         }
     },
     {// 14
@@ -177,7 +177,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(rt_compressor).publish_state(temperature);
-            return Utils::str_format("Laufzeit Kompressor: %f", temperature);
+            return Utils::format("Laufzeit Kompressor: %f", temperature);
         }
     },
     {// 15
@@ -187,7 +187,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
             id(min_vl_soll).publish_state(temperature);
-            return Utils::str_format("Min Vl Soll: %f", temperature);
+            return Utils::format("Min Vl Soll: %f", temperature);
         }
     },
     {// 16
@@ -197,7 +197,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(max_vl_soll).publish_state(temperature);
-            return Utils::str_format("Max Vl Soll: %f", temperature);
+            return Utils::format("Max Vl Soll: %f", temperature);
         }
     },
     {// 17
@@ -207,7 +207,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             id(hk_funktion).publish_state(data[6]);
             const std::string mode = Utils::setSelectOption(id(select_hk), map_hk, data[6]);
-            return Utils::str_format("HK Funktion: %s", mode.c_str());
+            return Utils::format("HK Funktion: %s", mode.c_str());
         }
     },
     {// 18
@@ -217,7 +217,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
             id(t_vorlauf_tag).publish_state(temperature);
-            return Utils::str_format("Temperatur Vorlauf Tag: %f", temperature);
+            return Utils::format("Temperatur Vorlauf Tag: %f", temperature);
         }
     },
     {// 19
@@ -227,7 +227,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(Fehlercode).publish_state(temperature);
-            return Utils::str_format("Fehlercode: %f", temperature);
+            return Utils::format("Fehlercode: %f", temperature);
         }
     },
     {// 20
@@ -237,7 +237,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(Erzeugte_Energie_Gesamt).publish_state(temperature);
-            return Utils::str_format("Erzeugte Energie gesamt: %f", temperature);
+            return Utils::format("Erzeugte Energie gesamt: %f", temperature);
         }
     },
     {// 21
@@ -247,7 +247,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/1000));
             id(Wasserdruck).publish_state(temperature);
-            return Utils::str_format("Wasserdruck: %f", temperature);
+            return Utils::format("Wasserdruck: %f", temperature);
         }
     },
     {// 22
@@ -257,7 +257,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(Qchhp).publish_state(temperature);
-            return Utils::str_format("EHS fuer CH: %f", temperature);
+            return Utils::format("EHS fuer CH: %f", temperature);
         }
     },
     {// 23
@@ -267,7 +267,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float(((int((data[6]) + ((data[5]) << 8))) ^ 0x8000) - 0x8000)/10;
             id(temperature_outside).publish_state(temperature); 
-            return Utils::str_format("Außentemperatur: %f", temperature);
+            return Utils::format("Außentemperatur: %f", temperature);
         }
     },
     {// 24
@@ -277,7 +277,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/100));
             id(heizkurve).publish_state(temperature);
-            return Utils::str_format("Heizkurve: %f", temperature);
+            return Utils::format("Heizkurve: %f", temperature);
         }
     },
     {// 25
@@ -287,7 +287,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
             id(spreizung_mod_hz).publish_state(temperature);
-            return Utils::str_format("Spreizung MOD HZ: %f", temperature);
+            return Utils::format("Spreizung MOD HZ: %f", temperature);
         }
     },
     {// 26
@@ -297,7 +297,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
             id(spreizung_mod_ww).publish_state(temperature);
-            return Utils::str_format("Spreizung MOD WW: %f", temperature);
+            return Utils::format("Spreizung MOD WW: %f", temperature);
         }
     },
     {// 27
@@ -307,7 +307,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             id(SGModus).publish_state(data[6]);
             const std::string mode = Utils::setSelectOption(id(select_sg_mode), map_sg_mode, data[6]);
-            return Utils::str_format("SGModus: %s", mode.c_str());
+            return Utils::format("SGModus: %s", mode.c_str());
         }
     },
     {// 28
@@ -317,7 +317,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             id(Smartgrid).publish_state(data[6]);
             const std::string mode = Utils::setSelectOption(id(select_smartgrid), map_sg, data[6]);
-            return Utils::str_format("Smart Grid: %s", mode.c_str());
+            return Utils::format("Smart Grid: %s", mode.c_str());
         }
     },
     {// 29
@@ -328,7 +328,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float temperature = float((float((int((data[3]) + ((data[4]) << 8))))));
             id(status_kompressor).publish_state(temperature);
-            return Utils::str_format("Status Kompressor: %f", temperature);
+            return Utils::format("Status Kompressor: %f", temperature);
         }
     },
     {// 30
@@ -338,7 +338,7 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> std::string {
             float status = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(dhw_mischer_postion).publish_state(status);
-            return Utils::str_format("Status Mischer DHW: %f", status);
+            return Utils::format("Status Mischer DHW: %f", status);
         }
     },
     {// 31
@@ -350,7 +350,7 @@ const std::vector<TRequest> entity_config = {
             const bool r2 = (data[5] == 0) && (data[6] & 0x80) == 0x80;
             const bool r3 = (data[5] == 1) && (data[6] == 0);
             id(status_heizstab).publish_state((0x4 * r1) | (0x2 * r2) | r3);
-            return Utils::str_format("Heizstabrelais: %d|%d|%d status: %d", r1, r2, r3, status_heizstab);
+            return Utils::format("Heizstabrelais: %d|%d|%d status: %d", r1, r2, r3, status_heizstab);
         }
     },  // Status Heizstäbe
     /*{// 32
@@ -358,7 +358,7 @@ const std::vector<TRequest> entity_config = {
         {0x31, 0x00, 0x0E, 0x00, 0x00, 0x00, 0x00},
         {0x31, 0x00, 0x0E, 0x00, 0x00, 0x00, 0x00},
         [](auto const& data) -> std::string {
-            return Utils::str_format("unbekannt!!!", "");
+            return Utils::format("unbekannt!!!", "");
         }
     } // Warmwasser Temperatur  °C et dec value - ok /10
     */

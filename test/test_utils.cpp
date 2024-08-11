@@ -44,10 +44,10 @@ TEST(TestUtils, split) {
     EXPECT_THAT(TVS({{"ab"}, {"cd"}, {"ef"}}), ::testing::ElementsAreArray(Utils::split("ab|cd|ef")));
 }
 
-TEST(TestUtils, str_format) {
-    EXPECT_EQ("ab|cd", Utils::str_format("%s|%s", "ab", "cd"));
-    EXPECT_EQ("1|2", Utils::str_format("%d|%d", 1, 2));
-    EXPECT_EQ("1.230000|4.560000", Utils::str_format("%f|%f", 1.23, 4.56));
+TEST(TestUtils, format) {
+    EXPECT_EQ("ab|cd", Utils::format("%s|%s", "ab", "cd"));
+    EXPECT_EQ("1|2", Utils::format("%d|%d", 1, 2));
+    EXPECT_EQ("1.230000|4.560000", Utils::format("%f|%f", 1.23, 4.56));
 }
 
 TEST(TestUtils, bidi_map) {

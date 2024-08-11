@@ -12,7 +12,7 @@
 class Utils {
 public:
     template<typename... Args>
-    static std::string str_format(const std::string& format, Args... args)
+    static std::string format(const std::string& format, Args... args)
     {
         const auto size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;
         const auto buffer = std::make_unique<char[]>(size);
@@ -94,9 +94,9 @@ public:
     }
 };
 
-#define ESP_LOG_FILTER(tag, format, ...)                            \
+#define ESP_LOG_FILTER(tag, str_format, ...)                            \
     const std::string tag_str = std::string(tag);                   \
-    const std::string formated = Utils::str_format(format, __VA_ARGS__); \
+    const std::string formated = Utils::format(str_format, __VA_ARGS__); \
     const std::string log_filter = id(log_filter_text).state;       \
     bool found = log_filter.empty();                                \
     if (!found) {                                                   \
