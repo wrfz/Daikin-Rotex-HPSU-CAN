@@ -53,7 +53,7 @@ public:
     bool handle(uint32_t can_id, std::vector<uint8_t> const& responseData, uint32_t timestamp) {
         if (isMatch(can_id, responseData)) {
             std::string message = m_lambda(responseData);
-            ESP_LOG_FILTER("handled", "%s can_id<%s> data<%s>",
+            Utils::log("handled", "%s can_id<%s> data<%s>",
                 message.c_str(), Utils::to_hex(can_id).c_str(), Utils::to_hex(responseData).c_str());
 
             m_last_update = timestamp;
@@ -67,7 +67,7 @@ public:
         const bool use_extended_id = false;
 
         pCanBus->send_data(can_id, use_extended_id, { m_data.begin(), m_data.end() });
-        ESP_LOG_FILTER("send", "can_id<%d>, name<%s>, data<%s>", m_request_index, m_name.c_str(), Utils::to_hex(m_data).c_str());
+        Utils::log("send", "can_id<%d>, name<%s>, data<%s>", m_request_index, m_name.c_str(), Utils::to_hex(m_data).c_str());
 
         m_last_request = millis();
     }
@@ -111,7 +111,7 @@ public:
         if (pRequest != nullptr) {
             pRequest->handle(can_id, responseData, timestamp);
         } else {
-            ESP_LOG_FILTER("unhandled", "can_id<%s> data<%s>", Utils::to_hex(can_id).c_str(), Utils::to_hex(responseData).c_str());
+            Utils::log("unhandled", "can_id<%s> data<%s>", Utils::to_hex(can_id).c_str(), Utils::to_hex(responseData).c_str());
         }
     }
 

@@ -12,8 +12,7 @@
 class Utils {
 public:
     template<typename... Args>
-    static std::string format(const std::string& format, Args... args)
-    {
+    static std::string format(const std::string& format, Args... args) {
         const auto size = std::snprintf(nullptr, 0, format.c_str(), args...) + 1;
         const auto buffer = std::make_unique<char[]>(size);
 
@@ -22,8 +21,7 @@ public:
         return std::string(buffer.get(), buffer.get() + size - 1);
     }
 
-    static bool find(std::string const& haystack, std::string const& needle)
-    {
+    static bool find(std::string const& haystack, std::string const& needle) {
         auto it = std::search(
             haystack.begin(), haystack.end(),
             needle.begin(), needle.end(),
@@ -62,8 +60,7 @@ public:
     }
 
     template<typename T>
-    static std::string to_hex(const T& data)
-    {
+    static std::string to_hex(const T& data) {
         std::stringstream str;
         str.setf(std::ios_base::hex, std::ios::basefield);
         str.setf(std::ios_base::uppercase);
@@ -92,19 +89,22 @@ public:
         }
         return "INVALID";
     }
-};
 
-#define ESP_LOG_FILTER(tag, str_format, ...)                            \
-    const std::string tag_str = std::string(tag);                   \
-    const std::string formated = Utils::format(str_format, __VA_ARGS__); \
-    const std::string log_filter = id(log_filter_text).state;       \
-    bool found = log_filter.empty();                                \
-    if (!found) {                                                   \
-        for (auto segment : Utils::split(log_filter)) {             \
-            if (Utils::find(tag_str, segment) || Utils::find(formated, segment)) { \
-                found = true;                                       \
-                break;                                              \
-            }                                                       \
-        }                                                           \
-    }                                                               \
-    if (found) ESP_LOGI(tag, formated.c_str())
+    template<typename... Args>
+    static void log(std::string const& tag, std::string const& str_format, Args... args) {
+        const std::string formated = Utils::format(str_format, args...);
+        const std::string log_filter = id(log_filter_text).state;
+        bool found = log_filter.empty();
+        if (!found) {
+            for (auto segment : Utils::split(log_filter)) {
+                if (Utils::find(tag, segment) || Utils::find(formated, segment)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (found) {
+            ESP_LOGI(tag.c_str(), formated.c_str());
+        }
+    }
+};
