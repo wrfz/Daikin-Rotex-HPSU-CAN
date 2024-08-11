@@ -33,11 +33,6 @@ globals:
   - id: backup_dhw
     type: int
 
-  - id: interval_active
-    type: bool
-    restore_value: yes
-    initial_value: "true"
-
 # Enable logging
 logger:
   #level: VERBOSE
@@ -88,6 +83,5 @@ time:
 <<: !include numbers.yaml
 <<: !include selects.yaml
 <<: !include sensors.yaml
-<<: !include switches.yaml
 <<: !include texts.yaml
 <<: !include text_sensors.yaml
