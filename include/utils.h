@@ -22,6 +22,16 @@ public:
         return std::string(buffer.get(), buffer.get() + size - 1);
     }
 
+    static bool find(std::string const& haystack, std::string const& needle)
+    {
+        auto it = std::search(
+            haystack.begin(), haystack.end(),
+            needle.begin(), needle.end(),
+            [](unsigned char ch1, unsigned char ch2) { return std::toupper(ch1) == std::toupper(ch2); }
+        );
+        return (it != haystack.end());
+    }
+
     static std::vector<std::string> split(std::string const& str) {
         std::string segment;
         std::istringstream iss(str);
@@ -72,24 +82,26 @@ public:
         return str.str();
     }
 
-    static void setSelectOption(esphome::template_::TemplateSelect& select, BidiMap<uint8_t, std::string> const& map, uint8_t key) {
+    static std::string setSelectOption(esphome::template_::TemplateSelect& select, BidiMap<uint8_t, std::string> const& map, uint8_t key) {
         auto const iter = map.findByKey(key);
         if (iter != map.end()) {
             auto call = select.make_call();
             call.set_option(iter->second);
             call.perform();
+            return iter->second;
         }
+        return "INVALID";
     }
 };
 
 #define ESP_LOG_FILTER(tag, format, ...)                            \
     const std::string tag_str = std::string(tag);                   \
-    const std::string formated = Utils::str_format(format, __VA_ARGS__);   \
+    const std::string formated = Utils::str_format(format, __VA_ARGS__); \
     const std::string log_filter = id(log_filter_text).state;       \
     bool found = log_filter.empty();                                \
     if (!found) {                                                   \
-        for (auto segment : Utils::split(log_filter)) {                   \
-            if (tag_str.find(segment) != std::string::npos || formated.find(segment) != std::string::npos) { \
+        for (auto segment : Utils::split(log_filter)) {             \
+            if (Utils::find(tag_str, segment) || Utils::find(formated, segment)) { \
                 found = true;                                       \
                 break;                                              \
             }                                                       \

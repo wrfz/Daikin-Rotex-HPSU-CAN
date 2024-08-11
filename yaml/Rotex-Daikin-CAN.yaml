@@ -78,11 +78,6 @@ canbus:
         can_id_mask: 0
         then:
           - lambda: |-
-              struct timeval tv;
-              gettimeofday(&tv, nullptr);
-              ESP_LOGI("main", "mil: %d|now: %d|sec: %ld|usec: %d",
-                millis(), id(homeassistant_time).now(), tv.tv_sec, tv.tv_usec);
-
               data_requests.handle(id(can_bus), can_id, x, millis());
 
 time:
