@@ -32,7 +32,7 @@ TEST(TestRequest, send) {
     g_millis = 1234;
 
     EXPECT_FALSE(request.inProgress());
-    request.send(&can);
+    request.request(&can);
     EXPECT_TRUE(request.inProgress());
 }
 
@@ -122,14 +122,14 @@ TEST(TestRequest, inProgress) {
 
     EXPECT_FALSE(request.inProgress());
     g_millis = 1000;
-    request.send(&can);
+    request.request(&can);
     EXPECT_TRUE(request.inProgress());
 
     EXPECT_TRUE(request.handle(0x200, TV8({0x54, 0xD8, 0xFA, 0x0A, 0x8C, 0x13, 0x18}), 2000));
     EXPECT_FALSE(request.inProgress());
 
     g_millis = 3000;
-    request.send(&can);
+    request.request(&can);
     EXPECT_TRUE(request.inProgress());
     g_millis = 4000;
     EXPECT_TRUE(request.inProgress());

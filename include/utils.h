@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <vector>
 #include <stdint.h>
+#include <variant>
 #include <memory>
 #include <map>
 #include "BidiMap.h"
@@ -108,3 +109,5 @@ public:
         }
     }
 };
+
+using DataType = std::variant<uint32_t, float, std::string>;

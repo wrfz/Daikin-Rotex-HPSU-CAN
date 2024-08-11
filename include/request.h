@@ -11,7 +11,7 @@ public:
         std::array<uint8_t, 7> const& data,
         uint32_t response_can_id,
         std::array<uint16_t, 7> const& expected_reponse,
-        std::function<std::string(std::vector<uint8_t> const&)> lambda)
+        std::function<DataType(std::vector<uint8_t> const&)> lambda)
     : m_name(name)
     , m_data(data)
     , m_response_can_id(response_can_id)
@@ -25,7 +25,7 @@ public:
     TRequest(std::string const& name,
         std::array<uint8_t, 7> const& data,
         std::array<uint16_t, 7> const& expected_reponse,
-        std::function<std::string(std::vector<uint8_t> const&)> lambda)
+        std::function<DataType(std::vector<uint8_t> const&)> lambda)
     : TRequest(name, data, 0x180, expected_reponse, lambda)
     {
     }
@@ -52,9 +52,19 @@ public:
 
     bool handle(uint32_t can_id, std::vector<uint8_t> const& responseData, uint32_t timestamp) {
         if (isMatch(can_id, responseData)) {
-            std::string message = m_lambda(responseData);
-            Utils::log("handled", "%s can_id<%s> data<%s>",
-                message.c_str(), Utils::to_hex(can_id).c_str(), Utils::to_hex(responseData).c_str());
+            DataType variant = m_lambda(responseData);
+            std::string value;
+            if (std::holds_alternative<uint32_t>(variant)) {
+                value = std::to_string(std::get<uint32_t>(variant));
+            } else if (std::holds_alternative<float>(variant)) {
+                value = std::to_string(std::get<float>(variant));
+            } else if (std::holds_alternative<std::string>(variant)) {
+                value = std::get<std::string>(variant);
+            } else {
+                value = "Unsupported value type!";
+            }
+            Utils::log("handled", "%s<%s> can_id<%s> data<%s>",
+                m_name.c_str(), value.c_str(), Utils::to_hex(can_id).c_str(), Utils::to_hex(responseData).c_str());
 
             m_last_update = timestamp;
             return true;
@@ -62,12 +72,12 @@ public:
         return false;
     }
 
-    void send(esphome::esp32_can::ESP32Can* pCanBus) {
+    void request(esphome::esp32_can::ESP32Can* pCanBus) {
         const uint32_t can_id = 0x680;
         const bool use_extended_id = false;
 
         pCanBus->send_data(can_id, use_extended_id, { m_data.begin(), m_data.end() });
-        Utils::log("send", "can_id<%d>, name<%s>, data<%s>", m_request_index, m_name.c_str(), Utils::to_hex(m_data).c_str());
+        Utils::log("request", "can_id<%d> name<%s> data<%s>", m_request_index, m_name.c_str(), Utils::to_hex(m_data).c_str());
 
         m_last_request = millis();
     }
@@ -82,7 +92,7 @@ private:
     std::array<uint8_t, 7> m_data;
     uint32_t m_response_can_id;
     std::array<uint16_t, 7> m_expected_reponse;
-    std::function<std::string(std::vector<uint8_t> const&)> m_lambda;
+    std::function<DataType(std::vector<uint8_t> const&)> m_lambda;
     uint32_t m_last_update;
     uint32_t m_last_request;
 };
@@ -118,7 +128,7 @@ public:
     bool sendNextPendingRequest(esphome::esp32_can::ESP32Can* pCanBus) {
         TRequest* pRequest = getNextRequestToSend();
         if (pRequest != nullptr) {
-            pRequest->send(pCanBus);
+            pRequest->request(pCanBus);
             return true;
         }
         return false;
@@ -127,7 +137,7 @@ public:
     void sendRequest(esphome::esp32_can::ESP32Can* pCanBus, uint32_t message_index) {
         if (message_index >= 0 && message_index < m_requests.size()) {
             TRequest& request = m_requests[message_index];
-            request.send(pCanBus);
+            request.request(pCanBus);
         }
     }
 
