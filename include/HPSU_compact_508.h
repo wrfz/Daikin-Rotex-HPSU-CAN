@@ -275,9 +275,10 @@ const std::vector<TRequest> entity_config = {
         {0x31, 0x00, 0xFA, 0x01, 0x0E, 0x00, 0x00},
         {  DC,   DC, 0xFA, 0x01, 0x0E,   DC,   DC},
         [](auto const& data) -> std::string {
-            float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/100));
-            id(heizkurve).publish_state(temperature);
-            return Utils::format("Heizkurve: %f", temperature);
+            const float value = (uint32_t(data[6]) + (data[5] << 8)) / 100.0f;
+            id(heizkurve).publish_state(value);
+            id(set_heizkurve).publish_state(value);
+            return Utils::format("Heizkurve: %f", value);
         }
     },
     {// 25
