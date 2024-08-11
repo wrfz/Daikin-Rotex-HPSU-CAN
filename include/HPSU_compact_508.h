@@ -2,6 +2,32 @@
 
 #include "request.h"
 
+static const BidiMap<uint8_t, std::string> map_betriebsmodus {
+    {0x01, "Bereitschaft"},
+    {0x03, "Heizen"},
+    {0x04, "Absenken"},
+    {0x05, "Sommer"},
+    {0x11, "Kühlen"},
+    {0x0B, "Automatik 1"},
+    {0x0C, "Automatik 2"}
+};
+
+static const BidiMap<uint8_t, std::string> map_hk = {
+    {0x00, "Witterungsgeführt"},
+    {0x01, "Fest"}
+};
+
+static const BidiMap<uint8_t, std::string> map_sg_mode = {
+    {0x00, "Aus"},
+    {0x01, "SG Modus 1"},
+    {0x02, "SG Modus 2"}
+};
+
+static const BidiMap<uint8_t, std::string> map_sg = {
+    {0x00, "Aus"},
+    {0x01, "An"}
+};
+
 const std::vector<TRequest> entity_config = {
     {// 0
         "Status Kessel",
@@ -32,23 +58,7 @@ const std::vector<TRequest> entity_config = {
             id(Betriebsmodus).publish_state(temperature);
             ESP_LOG_FILTER("main", "Betriebsmodus: %f", temperature);
 
-            // Betriebsmodus (Automatik bei jeglicher Änderung)0x31, 0x00, 0xFA, 0x01, 0x12, 0x00, 0x00
-
-            const std::map<uint8_t, std::string> map_betriebsmodus {
-                {0x01, "Bereitschaft"},
-                {0x03, "Heizen"},
-                {0x04, "Absenken"},
-                {0x05, "Sommer"},
-                {0x17, "Kühlen"},
-                {0x0B, "Automatik 1"},
-                {0x0C, "Automatik 2"}
-            };
-            auto const iter = map_betriebsmodus.find(data[5]);
-            if (iter != map_betriebsmodus.end()) {
-                auto call = id(betrieb).make_call();
-                call.set_option(iter->second);
-                call.perform();
-            }
+            Utils::setSelectOption(id(select_betriebsmodus), map_betriebsmodus, data[5]);
         }
     },
     {// 3
@@ -200,6 +210,8 @@ const std::vector<TRequest> entity_config = {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(hk_funktion).publish_state(temperature);
             ESP_LOG_FILTER("main", "HK Funktion: %f", temperature);
+
+            Utils::setSelectOption(id(select_hk), map_hk, data[5]);
         }
     },
     {// 18
@@ -300,6 +312,8 @@ const std::vector<TRequest> entity_config = {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(SGModus).publish_state(temperature);
             ESP_LOG_FILTER("main", "SGModus: %f", temperature);
+
+            Utils::setSelectOption(id(select_sg_mode), map_sg_mode, data[5]);
         }
     },
     {// 28
@@ -310,6 +324,8 @@ const std::vector<TRequest> entity_config = {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))));
             id(Smartgrid).publish_state(temperature);
             ESP_LOG_FILTER("main", "Smart Grid: %f", temperature);
+
+            Utils::setSelectOption(id(select_smartgrid), map_sg, data[5]);
         }
     },
     {// 29

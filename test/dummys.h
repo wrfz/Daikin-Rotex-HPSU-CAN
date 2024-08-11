@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <stdint.h>
+
 #define ESP_LOGI(tag, ...)
 
 
@@ -13,8 +17,18 @@ struct NumberEntity {
 namespace esphome {
 namespace template_ {
 
-    struct TemplateText {};
-    struct TemplateNumber {};
+    class NumberCall {
+    public:
+        void set_option(const std::string);
+        void perform();
+    };
+
+    class TemplateText {};
+    class TemplateNumber {};
+    class TemplateSelect {
+    public:
+        NumberCall make_call();
+    };
 }
 
 namespace esp32_can {
@@ -27,17 +41,11 @@ public:
 }
 }
 
-esphome::template_::TemplateText* log_filter_text;
-esphome::template_::TemplateNumber* update_interval;
 
-TextEntity id(esphome::template_::TemplateText* templateText) {
-    return TextEntity();
-}
-NumberEntity id(esphome::template_::TemplateNumber* templateNumber) {
-    return NumberEntity();
-}
+TextEntity id(esphome::template_::TemplateText* templateText);
+NumberEntity id(esphome::template_::TemplateNumber* templateNumber);
+uint32_t millis();
 
-uint32_t g_millis = 0;
-uint32_t millis() {
-    return g_millis;
-}
+extern esphome::template_::TemplateText* log_filter_text;
+extern esphome::template_::TemplateNumber* update_interval;
+extern uint32_t g_millis;

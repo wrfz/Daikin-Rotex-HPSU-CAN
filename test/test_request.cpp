@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <gmock/gmock-matchers.h>
-#include "utils.h"
 #include "dummys.h"
+#include "utils.h"
 #include "request.h"
 
 using TV8 = std::vector<uint8_t>;

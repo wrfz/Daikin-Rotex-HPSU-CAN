@@ -6,6 +6,8 @@
 #include <vector>
 #include <stdint.h>
 #include <memory>
+#include <map>
+#include "BidiMap.h"
 
 class Utils {
 public:
@@ -20,9 +22,34 @@ public:
         return std::string(buffer.get(), buffer.get() + size - 1);
     }
 
-    static std::vector<std::string> split(std::string const& str);
-    static bool is_number(const std::string& str);
-    static std::string to_hex(uint32_t value);
+    static std::vector<std::string> split(std::string const& str) {
+        std::string segment;
+        std::istringstream iss(str);
+        std::vector<std::string> result;
+
+        while (std::getline(iss, segment, '|'))
+        {
+            if (!segment.empty()) {
+                result.push_back(segment);
+            }
+        }
+
+        return result;
+    }
+
+    static bool is_number(const std::string& str) {
+        return !str.empty() && std::find_if(
+            str.begin(),
+            str.end(),
+            [](unsigned char chr) { return !std::isdigit(chr); }
+        ) == str.end();
+    }
+
+    static std::string to_hex(uint32_t value) {
+        char hex_string[20];
+        sprintf(hex_string, "0x%02X", value);
+        return std::string(hex_string);
+    }
 
     template<typename T>
     static std::string to_hex(const T& data)
@@ -45,6 +72,14 @@ public:
         return str.str();
     }
 
+    static void setSelectOption(esphome::template_::TemplateSelect& select, BidiMap<uint8_t, std::string> const& map, uint8_t key) {
+        auto const iter = map.findByKey(key);
+        if (iter != map.end()) {
+            auto call = select.make_call();
+            call.set_option(iter->second);
+            call.perform();
+        }
+    }
 };
 
 #define ESP_LOG_FILTER(tag, format, ...)                            \

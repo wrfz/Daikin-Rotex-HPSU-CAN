@@ -17,7 +17,7 @@ enable_testing()
 
 add_executable(
   ${TARGET_NAME}
-  ../src/utils.cpp
+  dummys.cpp
   test_utils.cpp
   test_request.cpp
 )

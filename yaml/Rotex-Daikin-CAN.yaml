@@ -7,15 +7,18 @@ esphome:
     name: rotex
     friendly_name: Rotex
     includes:
+        - include/BidiMap.h
         - include/utils.h
         - include/request.h
         - include/${heatpump_model}.h
-        - src/utils.cpp
+#        - src/utils.cpp
     platformio_options:
         build_unflags:
             - "-std=gnu++11"
+            - "-fno-exceptions"
         build_flags:
             - "-std=gnu++17"
+            - "-fexceptions"
     on_loop:
       then:
       - lambda: |-

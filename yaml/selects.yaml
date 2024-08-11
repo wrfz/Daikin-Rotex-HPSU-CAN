@@ -3,7 +3,7 @@ select:
 
   - platform: template
     name: "Betriebsmodus setzen"
-    id: betrieb
+    id: select_betriebsmodus
     optimistic: true
     options:
       - "Heizen"
@@ -20,22 +20,13 @@ select:
         - canbus.send:
             can_id: 0x680
             data: !lambda |-
-              static const std::map<std::string, uint8_t> mode_map = {
-                {"Heizen", 3},
-                {"Bereitschaft", 1},
-                {"Absenken", 4},
-                {"Sommer", 5},
-                {"Kühlen", 17},
-                {"Automatik 1", 11},
-                {"Automatik 2", 12}
-              };
-              return {0x30, 0x00, 0xFA, 0x01, 0x12, mode_map.at(x), 0x00};
+              return {0x30, 0x00, 0xFA, 0x01, 0x12, map_betriebsmodus.getKey(x), 0x00};
 
     #Set HK Funktion
 
   - platform: template
     name: "HK Funktion"
-    id: hk
+    id: select_hk
     optimistic: true
     options:
       - "Witterungsgeführt"
@@ -47,17 +38,13 @@ select:
         - canbus.send:
             can_id: 0x680
             data: !lambda |-
-              static const std::map<std::string, uint8_t> mode_map = {
-                {"Witterungsgeführt", 0},
-                {"Fest", 1}
-              };
-              return {0x30, 0x00, 0xFA, 0x01, 0x41, 0x00, mode_map.at(x)};
+              return {0x30, 0x00, 0xFA, 0x01, 0x41, 0x00, map_hk.getKey(x)};
 
     #Set SG Funktion
 
   - platform: template
     name: "SG Modus"
-    id: sg
+    id: select_sg_mode
     optimistic: true
     options:
       - "Aus"
@@ -70,18 +57,13 @@ select:
         - canbus.send:
             can_id: 0x680
             data: !lambda |-
-              static const std::map<std::string, uint8_t> mode_map = {
-                {"Aus", 0},
-                {"SG Modus 1", 1},
-                {"SG Modus 2", 2}
-              };
-              return {0x30, 0x00, 0xFA, 0x06, 0x94, 0x00, mode_map.at(x)};
+              return {0x30, 0x00, 0xFA, 0x06, 0x94, 0x00, map_sg_mode.getKey(x)};
 
     #Set Smart Grid
 
   - platform: template
     name: "Smart Grid"
-    id: smartgrid
+    id: select_smartgrid
     optimistic: true
     options:
       - "Aus"
@@ -93,8 +75,4 @@ select:
         - canbus.send:
             can_id: 0x680
             data: !lambda |-
-              static const std::map<std::string, uint8_t> mode_map = {
-                {"Aus", 0},
-                {"An", 1}
-              };
-              return {0x30, 0x00, 0xFA, 0x06, 0x93, 0x00, mode_map.at(x)};
+              return {0x30, 0x00, 0xFA, 0x06, 0x93, 0x00, map_sg.getKey(x)};
