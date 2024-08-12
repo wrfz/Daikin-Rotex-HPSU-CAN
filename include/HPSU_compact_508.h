@@ -149,15 +149,20 @@ const std::vector<TRequest> entity_config = {
         }
     },
     {
-        "Warmwasser soll",
+        "T-WW-Soll1",
         {0x31, 0x00, 0x13, 0x00, 0x00, 0x00, 0x00},
         {0xD2, 0x00, 0x13,   DC,   DC, 0x00, 0x00},
         [](auto const& data) -> DataType {
-            uint16_t temperature_raw = (data[3] <<  8) | data[4]; // Convert to int16be
+            uint16_t temperature_raw = (data[3] <<  8) | data[4];
             float temperature = static_cast<float>(temperature_raw) / 10.0;
             id(t_ww_soll).publish_state(temperature);
-            id(ww_soll).publish_state(temperature);
             return temperature;
+        },
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10);
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x13, high_byte, low_byte, 0x00, 0x00 };
         }
     },
     {
@@ -168,6 +173,23 @@ const std::vector<TRequest> entity_config = {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(raumsoll1).publish_state(temperature);
             return temperature;
+        }
+    },
+    {
+        "Raumsoll 1 Einstellen",
+        {0x31, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00},
+        {0xD2, 0x00, 0x05, 0x00,   DC, 0x00,   DC},
+        [](auto const& data) -> DataType {
+            float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
+            id(set_raumsoll1).publish_state(temperature);
+            return temperature;
+        },
+        [](auto const& value) -> std::vector<uint8_t> {
+            const uint16_t hk = (uint16_t)(value * 10);
+            const uint8_t high_byte = hk >> 8;
+            const uint8_t low_byte = hk & 0xFF;
+
+            return { 0x30, 0x00, 0x05, high_byte, low_byte, 0x00, 0x00 };
         }
     },
     {
