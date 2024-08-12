@@ -13,17 +13,25 @@ number:
   ##### Raumsoll 1
   - platform: template
     name: "Raumsoll 1 Einstellen"
-    id: set_raumsoll1
+    id: r_soll
+    optimistic: true
     mode: box
     min_value: 15
     max_value: 25
     step: 0.1
+    initial_value: 19
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - lambda: |-
-          data_requests.sendSet(id(can_bus), "Raumsoll 1 Einstellen", x);
+      - delay: 250ms
+      - canbus.send:
+          can_id: 0x680
+          data: !lambda |-
+            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x05, high_byte, low_byte, 0x00, 0x00 };
 
   #### Heizkurve
 
@@ -40,8 +48,8 @@ number:
 
   ##### Warmwasser
   - platform: template
-    name: "T-WW-Soll1"
-    id: t_ww_soll
+    name: "WW Einstellen"
+    id: ww_soll
     optimistic: true
     mode: box
     min_value: 35
@@ -52,8 +60,14 @@ number:
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - lambda: |-
-          data_requests.sendSet(id(can_bus), "T-WW-Soll1", x);
+      - delay: 250ms
+      - canbus.send:
+          can_id: 0x680
+          data: !lambda |-
+            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x13, high_byte, low_byte, 0x00, 0x00 };
 
   ##### Min VL
   - platform: template
