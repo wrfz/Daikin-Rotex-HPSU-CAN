@@ -11,6 +11,4 @@ text:
     mode: text
     set_action:
       - lambda: |-
-          if (Utils::is_number(x)) {
-            data_requests.sendRequest(id(can_bus), std::stoi(x));
-          }
+          data_requests.sendGet(id(can_bus), x);

@@ -5,9 +5,10 @@ number:
     optimistic: true
     mode: box
     min_value: 0
-    max_value: 600 # 10 minutes
+    max_value: 3600 # 60 minutes
     step: 1.0
     initial_value: 20
+    restore_value: true
 
   ##### Raumsoll 1
   - platform: template
@@ -37,20 +38,13 @@ number:
   - platform: template
     name: "Heizkurve Einstellen"
     id: set_heizkurve
-    optimistic: true
     mode: box
     min_value: 0
     max_value: 2.55
     step: 0.01
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t hk = (uint16_t)(x * 100); // Convert to int16be
-            uint8_t high_byte = hk >> 8;
-            uint8_t low_byte = hk & 0xFF;
-            return { 0x30, 0x00, 0xFA, 0x01, 0x0E, high_byte, low_byte };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "Heizkurve Einstellen", x);
 
   ##### Warmwasser
   - platform: template

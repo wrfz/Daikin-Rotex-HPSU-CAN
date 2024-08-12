@@ -92,6 +92,7 @@ sensor:
     internal: false
     icon: "mdi:waves-arrow-left"
     accuracy_decimals: 0
+    disabled_by_default: true
 
   - platform: template
     name: "Wasserdruck"
