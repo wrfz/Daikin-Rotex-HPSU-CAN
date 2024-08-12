@@ -148,18 +148,29 @@ const std::vector<TRequest> entity_config = {
             return temperature;
         }
     },
+
     {
-        "Warmwasser soll",
+        "T-WW-Soll1",
         {0x31, 0x00, 0x13, 0x00, 0x00, 0x00, 0x00},
         {0xD2, 0x00, 0x13,   DC,   DC, 0x00, 0x00},
         [](auto const& data) -> DataType {
-            uint16_t temperature_raw = (data[3] <<  8) | data[4]; // Convert to int16be
+            uint16_t temperature_raw = (data[3] <<  8) | data[4];
             float temperature = static_cast<float>(temperature_raw) / 10.0;
-            id(t_ww_soll).publish_state(temperature);
             id(ww_soll).publish_state(temperature);
+            id(ww_soll_set).publish_state(temperature);
             return temperature;
         }
     },
+    {
+        "WW Einstellen",
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10);
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x13, high_byte, low_byte, 0x00, 0x00 };
+        }
+    },
+
     {
         "Raumsoll 1",
         {0x31, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00},
@@ -167,9 +178,20 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> DataType {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(raumsoll1).publish_state(temperature);
+            id(raumsoll1_set).publish_state(temperature);
             return temperature;
         }
     },
+    {
+        "Raumsoll 1 Einstellen",
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10);
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x05, high_byte, low_byte, 0x00, 0x00 };
+        }
+    },
+
     {
         "Laufzeit Kompressor",
         {0x31, 0x00, 0xFA, 0x06, 0xA5, 0x00, 0x00},
@@ -180,26 +202,49 @@ const std::vector<TRequest> entity_config = {
             return temperature;
         }
     },
+
     {
-        "Min Vl Soll",
+        "Min VL Soll",
         {0x31, 0x00, 0xFA, 0x01, 0x2B, 0x00, 0x00},
         {  DC,   DC, 0xFA, 0x01, 0x2B,   DC,   DC},
         [](auto const& data) -> DataType {
             float temperature = float(float((int((data[6]) + ((data[5]) << 8))))/10);
             id(min_vl_soll).publish_state(temperature);
+            id(min_vl_soll_set).publish_state(temperature);
             return temperature;
         }
     },
     {
-        "Max Vl Soll",
+        "Min VL Einstellen",
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10);
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0xFA, 0x01, 0x2B, high_byte, low_byte };
+        }
+    },
+
+    {
+        "Max VL Soll",
         {0x31, 0x00, 0x28, 0x00, 0x00, 0x00, 0x00},
         {  DC,   DC, 0x28,   DC,   DC,   DC,   DC},
         [](auto const& data) -> DataType {
             float temperature = float((float((int((data[4]) + ((data[3]) << 8))))/10));
             id(max_vl_soll).publish_state(temperature);
+            id(max_vl_soll_set).publish_state(temperature);
             return temperature;
         }
     },
+    {
+        "Max VL Einstellen",
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10); // Convert to int16be
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0x28, high_byte, low_byte, 0x00, 0x00, };
+        }
+    },
+
     {
         "HK Funktion",
         {0x31, 0x00, 0xFA, 0x01, 0x41, 0x00, 0x00},
@@ -209,16 +254,28 @@ const std::vector<TRequest> entity_config = {
             return Utils::setSelectOption(id(select_hk), map_hk, data[6]);
         }
     },
+
     {
-        "Temperatur Vorlauf Tag",
+        "T Vorlauf Tag",
         {0x31, 0x00, 0xFA, 0x01, 0x29, 0x00, 0x00},
         {  DC,   DC, 0xFA, 0x01, 0x29,   DC,   DC},
         [](auto const& data) -> DataType {
             float temperature = float((float((int((data[6]) + ((data[5]) << 8))))/10));
             id(t_vorlauf_tag).publish_state(temperature);
+            id(t_vorlauf_tag_set).publish_state(temperature);
             return temperature;
         }
     },
+    {
+        "T Vorlauf Tag Einstellen",
+        [](auto const& value) -> std::vector<uint8_t> {
+            uint16_t temperature = (uint16_t)(value * 10);
+            uint8_t high_byte = temperature >> 8;
+            uint8_t low_byte = temperature & 0xFF;
+            return { 0x30, 0x00, 0xFA,  0x01, 0x29, high_byte, low_byte, };
+        }
+    },
+
     {
         "Fehlercode",
         {0x31, 0x00, 0xFA, 0x13, 0x88, 0x00, 0x00},
@@ -269,6 +326,7 @@ const std::vector<TRequest> entity_config = {
             return temperature;
         }
     },
+
     {
         "Heizkurve",
         {0x31, 0x00, 0xFA, 0x01, 0x0E, 0x00, 0x00},
@@ -276,18 +334,12 @@ const std::vector<TRequest> entity_config = {
         [](auto const& data) -> DataType {
             const float value = (uint32_t(data[6]) + (data[5] << 8)) / 100.0f;
             id(heizkurve).publish_state(value);
+            id(heizkurve_set).publish_state(value);
             return value;
         }
     },
     {
         "Heizkurve Einstellen",
-        {0x31, 0x00, 0xFA, 0x01, 0x0E, 0x00, 0x00},
-        {  DC,   DC, 0xFA, 0x01, 0x0E,   DC,   DC},
-        [](auto const& data) -> DataType {
-            const float value = (uint32_t(data[6]) + (data[5] << 8)) / 100.0f;
-            id(set_heizkurve).publish_state(value);
-            return value;
-        },
         [](auto const& value) -> std::vector<uint8_t> {
             const uint16_t hk = (uint16_t)(value * 100);
             const uint8_t high_byte = hk >> 8;
@@ -296,6 +348,7 @@ const std::vector<TRequest> entity_config = {
             return { 0x30, 0x00, 0xFA, 0x01, 0x0E, high_byte, low_byte };
         }
     },
+
     {
         "Spreizung MOD HZ",
         {0x31, 0x00, 0xFA, 0x06, 0x83, 0x00, 0x00},

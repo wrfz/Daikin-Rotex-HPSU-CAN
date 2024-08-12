@@ -52,12 +52,22 @@ public:
     {
     }
 
+    TRequest(std::string const& name,
+        TSetLambda setLambda)
+    : TRequest(name, {}, 0x00, {}, [](auto const&) -> DataType { return 0u; }, setLambda)
+    {
+    }
+
     std::string const& getName() const {
         return m_name;
     }
 
     uint32_t getLastUpdate() const {
         return m_last_update;
+    }
+
+    bool hasSendGet() const {
+        return m_response_can_id != 0x00;
     }
 
     bool isMatch(uint32_t can_id, std::vector<uint8_t> const& responseData) const {
@@ -95,14 +105,16 @@ public:
     }
 
     void sendGet(esphome::esp32_can::ESP32Can* pCanBus) {
-        const uint32_t can_id = 0x680;
-        const bool use_extended_id = false;
+        if (hasSendGet()) {
+            const uint32_t can_id = 0x680;
+            const bool use_extended_id = false;
 
-        pCanBus->send_data(can_id, use_extended_id, { m_data.begin(), m_data.end() });
-        Utils::log("request.h", "sendGet: name<%s> can_id<%s> data<%s>",
-            m_name.c_str(), Utils::to_hex(can_id).c_str(), Utils::to_hex(m_data).c_str());
+            pCanBus->send_data(can_id, use_extended_id, { m_data.begin(), m_data.end() });
+            Utils::log("request.h", "sendGet: name<%s> can_id<%s> data<%s>",
+                m_name.c_str(), Utils::to_hex(can_id).c_str(), Utils::to_hex(m_data).c_str());
 
-        m_last_request = millis();
+            m_last_request = millis();
+        }
     }
 
     void sendSet(esphome::esp32_can::ESP32Can* pCanBus, float value) {
@@ -198,8 +210,10 @@ private:
         const uint32_t interval = static_cast<uint32_t>(id(update_interval).state) * 1000;
 
         for (auto& request : m_requests) {
-            if ((timestamp > (request.getLastUpdate() + interval)) && !request.inProgress()) {
-                return &request;
+            if (request.hasSendGet()) {
+                if ((timestamp > (request.getLastUpdate() + interval)) && !request.inProgress()) {
+                    return &request;
+                }
             }
         }
         return nullptr;

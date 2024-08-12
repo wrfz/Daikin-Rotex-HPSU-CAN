@@ -152,7 +152,7 @@ sensor:
 
   - platform: template
     name: "T-WW-Soll1"
-    id: t_ww_soll
+    id: ww_soll
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"

@@ -13,31 +13,24 @@ number:
   ##### Raumsoll 1
   - platform: template
     name: "Raumsoll 1 Einstellen"
-    id: r_soll
-    optimistic: true
+    id: raumsoll1_set
     mode: box
     min_value: 15
     max_value: 25
     step: 0.1
-    initial_value: 19
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
-            uint8_t high_byte = temperature >> 8;
-            uint8_t low_byte = temperature & 0xFF;
-            return { 0x30, 0x00, 0x05, high_byte, low_byte, 0x00, 0x00 };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "Raumsoll 1 Einstellen", x);
+          data_requests.sendGet(id(can_bus), "Raumsoll 1");
 
   #### Heizkurve
 
   - platform: template
     name: "Heizkurve Einstellen"
-    id: set_heizkurve
+    id: heizkurve_set
     mode: box
     min_value: 0
     max_value: 2.55
@@ -45,95 +38,68 @@ number:
     set_action:
       - lambda: |-
           data_requests.sendSet(id(can_bus), "Heizkurve Einstellen", x);
+          data_requests.sendGet(id(can_bus), "Heizkurve");
 
   ##### Warmwasser
   - platform: template
     name: "WW Einstellen"
-    id: ww_soll
-    optimistic: true
+    id: ww_soll_set
     mode: box
     min_value: 35
     max_value: 70
     step: 1
-    initial_value: 45
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
-            uint8_t high_byte = temperature >> 8;
-            uint8_t low_byte = temperature & 0xFF;
-            return { 0x30, 0x00, 0x13, high_byte, low_byte, 0x00, 0x00 };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "WW Einstellen", x);
+          data_requests.sendGet(id(can_bus), "T-WW-Soll1");
 
   ##### Min VL
   - platform: template
     name: "Min VL Einstellen"
-    id: min_vl_set
-    optimistic: true
+    id: min_vl_soll_set
     mode: box
     min_value: 25
     max_value: 40
     step: 1
-    initial_value: 25
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
-            uint8_t high_byte = temperature >> 8;
-            uint8_t low_byte = temperature & 0xFF;
-            return { 0x30, 0x00, 0xFA, 0x01, 0x2B, high_byte, low_byte };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "Min VL Einstellen", x);
+          data_requests.sendGet(id(can_bus), "Min VL Soll");
 
   ##### Max VL Set
   - platform: template
     name: "Max VL Einstellen"
-    id: max_vl_set
-    optimistic: true
+    id: max_vl_soll_set
     mode: box
     min_value: 25
     max_value: 60
     step: 1
-    initial_value: 35
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
-            uint8_t high_byte = temperature >> 8;
-            uint8_t low_byte = temperature & 0xFF;
-            return { 0x30, 0x00, 0x28, high_byte, low_byte, 0x00, 0x00, };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "Max VL Einstellen", x);
+          data_requests.sendGet(id(can_bus), "Max VL Soll");
 
   ##### T Vorlauf Tag Set
   - platform: template
     name: "T Vorlauf Tag Einstellen"
     id: t_vorlauf_tag_set
-    optimistic: true
     mode: box
     min_value: 25
     max_value: 60
     step: 1
-    initial_value: 35
     unit_of_measurement: "°C"
     icon: "mdi:thermometer-lines"
     device_class: "temperature"
     set_action:
-      - delay: 250ms
-      - canbus.send:
-          can_id: 0x680
-          data: !lambda |-
-            uint16_t temperature = (uint16_t)(x * 10); // Convert to int16be
-            uint8_t high_byte = temperature >> 8;
-            uint8_t low_byte = temperature & 0xFF;
-            return { 0x30, 0x00, 0xFA,  0x01, 0x29, high_byte, low_byte, };
+      - lambda: |-
+          data_requests.sendSet(id(can_bus), "T Vorlauf Tag Einstellen", x);
+          data_requests.sendGet(id(can_bus), "T Vorlauf Tag");

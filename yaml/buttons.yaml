@@ -7,7 +7,7 @@ button:
       then:
         - globals.set:
             id: backup_dhw
-            value: !lambda return int(id(t_ww_soll).state * 10);
+            value: !lambda return int(id(ww_soll).state * 10);
         - canbus.send:
             can_id: 0x680
             data: [0x30, 0x00, 0x13, 0x02, 0xBC, 0x00, 0x00] # 70 Grad Grundeinstellung
