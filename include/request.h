@@ -152,6 +152,10 @@ public:
     {
     }
 
+    void setCanbus(esphome::esp32_can::ESP32Can* pCanBus) {
+        m_pCanBus = pCanBus;
+    }
+
     uint32_t size() const {
         return m_requests.size();
     }
@@ -160,7 +164,7 @@ public:
         return m_requests[index];
     }
 
-    void handle(esphome::esp32_can::ESP32Can* pCanBus, uint32_t can_id, std::vector<uint8_t> const& responseData, uint32_t timestamp) {
+    void handle(uint32_t can_id, std::vector<uint8_t> const& responseData, uint32_t timestamp) {
         bool bHandled = false;
         for (auto& request : m_requests) {
             if (request.isMatch(can_id, responseData)) {
@@ -173,32 +177,32 @@ public:
         }
     }
 
-    bool sendNextPendingGet(esphome::esp32_can::ESP32Can* pCanBus) {
+    bool sendNextPendingGet() {
         TRequest* pRequest = getNextRequestToSend();
         if (pRequest != nullptr) {
-            pRequest->sendGet(pCanBus);
+            pRequest->sendGet(m_pCanBus);
             return true;
         }
         return false;
     }
 
-    void sendGet(esphome::esp32_can::ESP32Can* pCanBus, std::string const& request_name) {
+    void sendGet(std::string const& request_name) {
         const auto it = std::find_if(m_requests.begin(), m_requests.end(),
             [& request_name](auto& request) { return request.getName() == request_name; });
 
         if (it != m_requests.end()) {
-            it->sendGet(pCanBus);
+            it->sendGet(m_pCanBus);
         } else {
             Utils::log("request.h", "sendGet(%s) -> Unknown request!", request_name.c_str());
         }
     }
 
-    void sendSet(esphome::esp32_can::ESP32Can* pCanBus, std::string const& request_name, float value) {
+    void sendSet(std::string const& request_name, float value) {
         const auto it = std::find_if(m_requests.begin(), m_requests.end(),
             [& request_name](auto& request) { return request.getName() == request_name; });
 
         if (it != m_requests.end()) {
-            it->sendSet(pCanBus, value);
+            it->sendSet(m_pCanBus, value);
         } else {
             Utils::log("request.h", "sendSet(%s) -> Unknown request!", request_name.c_str());
         }
@@ -220,6 +224,7 @@ private:
     }
 
     std::vector<TRequest> m_requests;
+    esphome::esp32_can::ESP32Can* m_pCanBus;
 };
 
 

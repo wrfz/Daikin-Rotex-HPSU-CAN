@@ -19,10 +19,15 @@ esphome:
         build_flags:
             - "-std=gnu++17"
             - "-fexceptions"
+    on_boot:
+      priority: 600
+      then:
+        - lambda: |-
+            data_requests.setCanbus(id(can_bus));
     on_loop:
       then:
       - lambda: |-
-          data_requests.sendNextPendingGet(id(can_bus));
+          data_requests.sendNextPendingGet();
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -73,7 +78,7 @@ canbus:
         can_id_mask: 0
         then:
           - lambda: |-
-              data_requests.handle(id(can_bus), can_id, x, millis());
+              data_requests.handle(can_id, x, millis());
 
 time:
   - platform: homeassistant

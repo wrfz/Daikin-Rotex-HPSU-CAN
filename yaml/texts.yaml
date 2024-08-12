@@ -11,4 +11,4 @@ text:
     mode: text
     set_action:
       - lambda: |-
-          data_requests.sendGet(id(can_bus), x);
+          data_requests.sendGet(x);

@@ -14,6 +14,7 @@ number:
   - platform: template
     name: "Raumsoll 1 Einstellen"
     id: raumsoll1_set
+    optimistic: true
     mode: box
     min_value: 15
     max_value: 25
@@ -23,27 +24,29 @@ number:
     device_class: "temperature"
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "Raumsoll 1 Einstellen", x);
-          data_requests.sendGet(id(can_bus), "Raumsoll 1");
+          data_requests.sendSet("Raumsoll 1 Einstellen", x);
+          data_requests.sendGet("Raumsoll 1");
 
   #### Heizkurve
 
   - platform: template
     name: "Heizkurve Einstellen"
     id: heizkurve_set
+    optimistic: true
     mode: box
     min_value: 0
     max_value: 2.55
     step: 0.01
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "Heizkurve Einstellen", x);
-          data_requests.sendGet(id(can_bus), "Heizkurve");
+          data_requests.sendSet("Heizkurve Einstellen", x);
+          data_requests.sendGet("Heizkurve");
 
   ##### Warmwasser
   - platform: template
     name: "WW Einstellen"
     id: ww_soll_set
+    optimistic: true
     mode: box
     min_value: 35
     max_value: 70
@@ -53,13 +56,14 @@ number:
     device_class: "temperature"
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "WW Einstellen", x);
-          data_requests.sendGet(id(can_bus), "T-WW-Soll1");
+          data_requests.sendSet("WW Einstellen", x);
+          data_requests.sendGet("T-WW-Soll1");
 
   ##### Min VL
   - platform: template
     name: "Min VL Einstellen"
     id: min_vl_soll_set
+    optimistic: true
     mode: box
     min_value: 25
     max_value: 40
@@ -69,13 +73,14 @@ number:
     device_class: "temperature"
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "Min VL Einstellen", x);
-          data_requests.sendGet(id(can_bus), "Min VL Soll");
+          data_requests.sendSet("Min VL Einstellen", x);
+          data_requests.sendGet("Min VL Soll");
 
   ##### Max VL Set
   - platform: template
     name: "Max VL Einstellen"
     id: max_vl_soll_set
+    optimistic: true
     mode: box
     min_value: 25
     max_value: 60
@@ -85,13 +90,14 @@ number:
     device_class: "temperature"
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "Max VL Einstellen", x);
-          data_requests.sendGet(id(can_bus), "Max VL Soll");
+          data_requests.sendSet("Max VL Einstellen", x);
+          data_requests.sendGet("Max VL Soll");
 
   ##### T Vorlauf Tag Set
   - platform: template
     name: "T Vorlauf Tag Einstellen"
     id: t_vorlauf_tag_set
+    optimistic: true
     mode: box
     min_value: 25
     max_value: 60
@@ -101,5 +107,5 @@ number:
     device_class: "temperature"
     set_action:
       - lambda: |-
-          data_requests.sendSet(id(can_bus), "T Vorlauf Tag Einstellen", x);
-          data_requests.sendGet(id(can_bus), "T Vorlauf Tag");
+          data_requests.sendSet("T Vorlauf Tag Einstellen", x);
+          data_requests.sendGet("T Vorlauf Tag");
